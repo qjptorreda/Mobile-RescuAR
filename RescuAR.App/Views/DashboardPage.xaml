@@ -1,37 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
 <ContentPage
+    x:Class="RescuAR.App.Views.DashboardPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="RescuAR.App.Views.DashboardPage">
+    Title="Dashboard">
 
-    <VerticalStackLayout
-        Padding="20"
-        Spacing="20">
+    <ScrollView>
 
-        <Label
-            Text="RescuAR"
-            FontSize="32"
-            FontAttributes="Bold" />
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="20">
 
-        <Frame
-            Padding="15"
-            CornerRadius="12"
-            BackgroundColor="#EEEEEE">
+            <Label
+                Text="RescuAR"
+                FontSize="32"
+                FontAttributes="Bold" />
 
-            <VerticalStackLayout>
-                <Label
-                    Text="Earthquake Alert"
-                    FontAttributes="Bold" />
+            <Border
+                Padding="15"
+                BackgroundColor="#EEEEEE"
+                StrokeThickness="0">
 
-                <Label
-                    Text="Proceed to evacuation immediately." />
-            </VerticalStackLayout>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12"/>
+                </Border.StrokeShape>
 
-        </Frame>
+                <VerticalStackLayout>
 
-        <Button
-            Text="Start AR Navigation"
-            Clicked="OnStartARClicked" />
+                    <Label
+                        Text="Earthquake Alert"
+                        FontAttributes="Bold" />
 
-    </VerticalStackLayout>
+                    <Label
+                        Text="Proceed to evacuation immediately." />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+        </VerticalStackLayout>
+
+    </ScrollView>
 
 </ContentPage>

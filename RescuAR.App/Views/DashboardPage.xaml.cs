@@ -6,12 +6,4 @@ public partial class DashboardPage : ContentPage
     {
         InitializeComponent();
     }
-
-    private async void OnStartARClicked(object sender, EventArgs e)
-    {
-        await DisplayAlertAsync(
-            "AR",
-            "Unity AR module will launch here.",
-            "OK");
-    }
 }
