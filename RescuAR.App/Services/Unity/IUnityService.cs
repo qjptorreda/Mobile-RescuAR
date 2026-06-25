@@ -2,5 +2,8 @@
 
 public interface IUnityService
 {
-    void LaunchUnity();
+    void LaunchUnity(
+        string destinationName,
+        double latitude,
+        double longitude);
 }
