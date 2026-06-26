@@ -6,17 +6,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <VerticalStackLayout
-        Padding="30"
-        Spacing="20"
-        VerticalOptions="Center">
+        Padding="24"
+        Spacing="16">
 
         <Label
-            HorizontalOptions="Center"
-            FontSize="24"
-            Text="Unity Launch Test" />
+            Text="Select Safe Zone"
+            FontSize="24" />
+
+        <Picker
+            x:Name="EvacuationCenterPicker"
+            Title="Choose Evacuation Center"
+            ItemDisplayBinding="{Binding Name}" />
 
         <Button
-            Text="Launch Unity"
+            Text="Launch AR Navigation"
             Clicked="LaunchUnityClicked" />
 
     </VerticalStackLayout>

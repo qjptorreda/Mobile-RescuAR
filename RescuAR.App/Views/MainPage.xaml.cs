@@ -1,27 +1,41 @@
-﻿using RescuAR.App.Services.Unity;
+﻿using RescuAR.App.Models;
+using RescuAR.App.Services.Unity;
 
-namespace RescuAR.App.Views
+namespace RescuAR.App.Views;
+
+public partial class MainPage : ContentPage
 {
-    public partial class MainPage : ContentPage
+    public MainPage()
     {
-        public MainPage()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
 
-        private void LaunchUnityClicked(
-            object? sender,
-            EventArgs e)
-        {
+        EvacuationCenterPicker.ItemsSource =
+            EvacuationCenterRepository.GetEvacuationCenters();
+    }
+
+    private void LaunchUnityClicked(
+        object? sender,
+        EventArgs e)
+    {
 #if ANDROID
-            var unityService =
-                Handler?.MauiContext?.Services.GetService<IUnityService>();
 
-            unityService?.LaunchUnity(
-                "Marikina Sports Center",
-                14.6358,
-                121.0965);
+        var safeZone =
+            EvacuationCenterPicker.SelectedItem as EvacuationCenter;
+
+        if (safeZone == null)
+            return;
+
+        var unityService =
+            Handler?
+                .MauiContext?
+                .Services
+                .GetService<IUnityService>();
+
+        unityService?.LaunchUnity(
+            safeZone.Name,
+            safeZone.Latitude,
+            safeZone.Longitude);
+
 #endif
-        }
     }
 }
