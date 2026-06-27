@@ -5,12 +5,52 @@ namespace RescuAR.App.Views;
 
 public partial class MainPage : ContentPage
 {
+    private readonly List<EvacuationCenter>
+        _centers = new();
+
     public MainPage()
     {
         InitializeComponent();
 
-        EvacuationCenterPicker.ItemsSource =
-            EvacuationCenterRepository.GetEvacuationCenters();
+        _centers.Add(
+            new EvacuationCenter
+            {
+                Id = 1,
+                Name = "Marikina Sports Center",
+                Latitude = 14.6358,
+                Longitude = 121.0965,
+                Capacity = 500,
+                Occupancy = 350,
+                Status = "OPEN"
+            });
+
+        _centers.Add(
+            new EvacuationCenter
+            {
+                Id = 2,
+                Name = "Sto. Niño Covered Court",
+                Latitude = 14.6412,
+                Longitude = 121.1048,
+                Capacity = 250,
+                Occupancy = 125,
+                Status = "OPEN"
+            });
+
+        _centers.Add(
+            new EvacuationCenter
+            {
+                Id = 3,
+                Name = "Concepcion Gym",
+                Latitude = 14.6490,
+                Longitude = 121.1090,
+                Capacity = 400,
+                Occupancy = 400,
+                Status = "FULL"
+            });
+
+        CenterPicker.ItemsSource =
+            _centers.Select(x => x.Name)
+                .ToList();
     }
 
     private void LaunchUnityClicked(
@@ -19,11 +59,12 @@ public partial class MainPage : ContentPage
     {
 #if ANDROID
 
-        var safeZone =
-            EvacuationCenterPicker.SelectedItem as EvacuationCenter;
-
-        if (safeZone == null)
+        if (CenterPicker.SelectedIndex < 0)
             return;
+
+        var selectedCenter =
+            _centers[
+                CenterPicker.SelectedIndex];
 
         var unityService =
             Handler?
@@ -32,9 +73,7 @@ public partial class MainPage : ContentPage
                 .GetService<IUnityService>();
 
         unityService?.LaunchUnity(
-            safeZone.Name,
-            safeZone.Latitude,
-            safeZone.Longitude);
+            selectedCenter);
 
 #endif
     }
