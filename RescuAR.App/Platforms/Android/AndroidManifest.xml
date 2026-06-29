@@ -4,7 +4,7 @@
           package="com.rescuar.app">
 
 	<queries>
-		<package android:name="com.rescuar.ar" />
+		<package android:name="com.rescuar.augmentedreality" />
 	</queries>
 
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

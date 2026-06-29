@@ -19,7 +19,7 @@ public sealed class UnityService : IUnityService
         var intent = new Intent();
 
         intent.SetClassName(
-            "com.rescuar.ar",
+            "com.rescuar.augmentedreality",
             "com.unity3d.player.UnityPlayerGameActivity");
 
         string json =
