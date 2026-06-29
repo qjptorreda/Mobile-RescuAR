@@ -104,3 +104,35 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Android Studio
+.gradle/
+.idea/
+
+# Android build outputs
+build/
+**/build/
+
+# Native build outputs
+.cxx/
+.externalNativeBuild/
+
+# Local machine settings
+local.properties
+
+# Unity generated burst symbols
+*BurstDebugInformation_DoNotShip/
+
+# APKs
+*.apk
+*.aab
+
+# Android logs
+*.hprof
+
+# Unity export cache
+Export/.gradle/
+Export/.idea/
+Export/build/
+Export/local.properties
+Export/*BurstDebugInformation_DoNotShip/
