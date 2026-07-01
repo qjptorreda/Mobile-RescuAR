@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
 <ContentPage
     x:Class="RescuAR.App.Views.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -5,15 +7,13 @@
 
     <VerticalStackLayout
         Padding="30"
-        Spacing="20">
+        Spacing="20"
+        VerticalOptions="Center">
 
         <Label
+            HorizontalOptions="Center"
             FontSize="24"
-            Text="Evacuation Center Test" />
-
-        <Picker
-            x:Name="CenterPicker"
-            Title="Select Evacuation Center" />
+            Text="Unity Launch Test" />
 
         <Button
             Text="Launch Unity"
