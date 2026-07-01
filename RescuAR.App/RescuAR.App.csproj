@@ -47,6 +47,10 @@
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.18362.0</TargetPlatformMinVersion>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net10.0-android'">
+		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -66,12 +70,23 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="JniLibs\**" />
+	  <Compile Remove="JniLibs\**" />
+	  <EmbeddedResource Remove="JniLibs\**" />
+	  <MauiCss Remove="JniLibs\**" />
+	  <MauiXaml Remove="JniLibs\**" />
+	  <None Remove="JniLibs\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Platforms\Android\Unity\jniLibs\" />
+	  <Folder Include="UnityExport\" />
 	  <Folder Include="Views\Authentication\" />
 	  <Folder Include="Views\Dashboard\" />
 	  <Folder Include="Views\Camera\" />
@@ -245,6 +260,16 @@
 	  <MauiXaml Update="Views\Summary\SummaryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net10.0-android'">
+
+    		<AndroidNativeLibrary
+        		Include="Platforms\Android\Unity\jniLibs\arm64-v8a\*.so" />
+
+    		<AndroidJavaLibrary
+        		Include="Platforms\Android\Unity\aar\unity-classes.jar" />
+
 	</ItemGroup>
 
 </Project>
