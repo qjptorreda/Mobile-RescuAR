@@ -7,15 +7,9 @@
     xmlns:views="clr-namespace:RescuAR.App.Views">
 
     <TabBar>
-
         <ShellContent
-            Title="Dashboard"
-            ContentTemplate="{DataTemplate views:DashboardPage}" />
-
-        <ShellContent
-            Title="Camera"
-            ContentTemplate="{DataTemplate views:CameraPage}" />
-
+            Title="Main"
+            ContentTemplate="{DataTemplate views:MainPage}" />
     </TabBar>
 
 </Shell>

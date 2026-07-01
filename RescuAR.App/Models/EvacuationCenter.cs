@@ -1,10 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace RescuAR.App.Models;
 
-namespace RescuAR.App.Models
+public sealed class EvacuationCenter
 {
-    internal class EvacuationCenter
-    {
-    }
+    public int Id { get; set; }
+
+    public string Name { get; set; } =
+        string.Empty;
+
+    public double Latitude { get; set; }
+
+    public double Longitude { get; set; }
+
+    public int Capacity { get; set; }
+
+    public int Occupancy { get; set; }
+
+    public string Status { get; set; } =
+        string.Empty;
 }
