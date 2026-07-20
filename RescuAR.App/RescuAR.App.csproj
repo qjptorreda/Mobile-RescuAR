@@ -31,7 +31,7 @@
 		<ApplicationTitle>RescuAR.App</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.rescuar.app</ApplicationId>
+		<ApplicationId>com.rescuar.app</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -270,6 +270,18 @@
     		<AndroidJavaLibrary
         		Include="Platforms\Android\Unity\aar\unity-classes.jar" />
 
+    		<AndroidLibrary Remove="Platforms\Android\Unity\aar\*.aar" />
+    		<AndroidLibrary Remove="Platforms\Android\Unity\aar\**\*.aar" />
+    		<AndroidLibrary Include="Platforms\Android\Unity\aar\*.aar" Bind="false" />
+
 	</ItemGroup>
+
+	<Target Name="PrintAndroidLibraries" BeforeTargets="BeforeBuild">
+		<Message Importance="High" Text="AndroidLibrary items: @(AndroidLibrary -> '%(Identity) (Bind=%(Bind))')" />
+		<Message Importance="High" Text="AndroidJavaLibrary items: @(AndroidJavaLibrary -> '%(Identity) (Bind=%(Bind))')" />
+		<Message Importance="High" Text="InputJar items: @(InputJar -> '%(Identity)')" />
+		<Message Importance="High" Text="EmbeddedJar items: @(EmbeddedJar -> '%(Identity)')" />
+		<Message Importance="High" Text="LibraryProjectZip items: @(LibraryProjectZip -> '%(Identity)')" />
+	</Target>
 
 </Project>
