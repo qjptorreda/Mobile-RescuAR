@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using RescuAR.App.Services.Unity;
 
+
 #if ANDROID
 using RescuAR.App.Platforms.Android.Unity;
 #endif

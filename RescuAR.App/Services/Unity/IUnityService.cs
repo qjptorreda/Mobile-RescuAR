@@ -1,9 +1,10 @@
 ﻿using RescuAR.App.Models;
 
-namespace RescuAR.App.Services.Unity;
-
-public interface IUnityService
+namespace RescuAR.App.Services.Unity
 {
-    void LaunchUnity(
-        EvacuationCenter center);
+    public interface IUnityService
+    {
+        void LaunchUnity(
+            EvacuationCenter center);
+    }
 }
