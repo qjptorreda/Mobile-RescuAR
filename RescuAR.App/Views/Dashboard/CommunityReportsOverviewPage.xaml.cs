@@ -2,11 +2,11 @@ using RescuAR.App.ViewModels.Dashboard;
 
 namespace RescuAR.App.Views.Dashboard;
 
-public partial class AreaStatusOverviewPage : ContentView
+public partial class CommunityReportsOverviewPage : ContentView
 {
-    public AreaStatusOverviewPage()
+    public CommunityReportsOverviewPage()
     {
         InitializeComponent();
-        BindingContext = new AreaStatusOverviewViewModel();
+        BindingContext = new CommunityReportsOverviewViewModel();
     }
 }

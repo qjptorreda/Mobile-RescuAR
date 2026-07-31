@@ -3,7 +3,7 @@ using RescuAR.App.ViewModels.Dashboard;
 
 namespace RescuAR.App.Views.Dashboard;
 
-public partial class DashboardPage : ContentPage
+public partial class DashboardPage : ContentView
 {
     public DashboardPage()
     {
