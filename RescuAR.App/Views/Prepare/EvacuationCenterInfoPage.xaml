@@ -33,7 +33,7 @@
                                 <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14" VerticalOptions="Center">
                                     
                                     <Border WidthRequest="44" HeightRequest="44" StrokeShape="RoundRectangle 22" StrokeThickness="0" BackgroundColor="#E0F2FE">
-                                        <Label Text="{Binding Icon}" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
+                                        <Label Text="{Binding BadgeText}" TextColor="#0369A1" FontSize="11" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
                                     </Border>
                                     
                                     <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
@@ -56,7 +56,7 @@
             <VerticalStackLayout Spacing="16">
                 <Grid ColumnDefinitions="*,Auto">
                     <Label Text="Evacuation Centers (Real-time)" TextColor="#0F172A" FontSize="18" FontAttributes="Bold" VerticalOptions="Center" />
-                    <Button Grid.Column="1" Text="🗺️ Open Map" TextColor="#0A8491" BackgroundColor="#E0F2FE" CornerRadius="10" HeightRequest="36" FontSize="12" FontAttributes="Bold" Padding="12,0"
+                    <Button Grid.Column="1" Text="Open Map" TextColor="#0A8491" BackgroundColor="#E0F2FE" CornerRadius="10" HeightRequest="36" FontSize="12" FontAttributes="Bold" Padding="12,0"
                             Command="{Binding NavigateToMapCommand}" />
                 </Grid>
 
@@ -78,7 +78,7 @@
                                     </Grid>
 
                                     <!-- Address -->
-                                    <Label Text="{Binding Address, StringFormat='📍 {0}'}" TextColor="#475569" FontSize="12" />
+                                    <Label Text="{Binding Address, StringFormat='Address: {0}'}" TextColor="#475569" FontSize="12" />
 
                                     <!-- Real-time Capacity Progress Bar -->
                                     <VerticalStackLayout Spacing="6" BackgroundColor="#F8FAFC" Padding="12" RoundRectangle.CornerRadius="10">
@@ -92,7 +92,7 @@
                                     <!-- Action Row -->
                                     <Grid ColumnDefinitions="*,Auto">
                                         <Label Text="{Binding VerifiedBy, StringFormat='Verified by {0}'}" TextColor="#16A34A" FontSize="11" FontAttributes="Bold" VerticalOptions="Center" />
-                                        <Button Grid.Column="1" Text="📌 Live Check-In" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="10" HeightRequest="38" FontSize="12" FontAttributes="Bold" Padding="14,0"
+                                        <Button Grid.Column="1" Text="Live Check-In" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="10" HeightRequest="38" FontSize="12" FontAttributes="Bold" Padding="14,0"
                                                 Command="{Binding BindingContext.CheckInEvacueeCommand, Source={x:Reference thisPage}}"
                                                 CommandParameter="{Binding .}" />
                                     </Grid>

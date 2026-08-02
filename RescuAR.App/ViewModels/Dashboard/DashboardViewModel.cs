@@ -102,13 +102,4 @@ public partial class DashboardViewModel : ObservableObject
             await Shell.Current.GoToAsync("Prepare/EvacuationCenterInfo");
         }
     }
-
-    [RelayCommand]
-    private async Task OpenCommunityReportsAsync()
-    {
-        if (Shell.Current != null)
-        {
-            await Shell.Current.GoToAsync("Reports/CommunityPosting");
-        }
-    }
 }

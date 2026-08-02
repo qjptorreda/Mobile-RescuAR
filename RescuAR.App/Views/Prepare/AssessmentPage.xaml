@@ -20,12 +20,11 @@
                 <HorizontalStackLayout.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding BackCommand}" />
                 </HorizontalStackLayout.GestureRecognizers>
-                <Label Text="←" TextColor="#0A8491" FontSize="20" FontAttributes="Bold" VerticalOptions="Center" />
                 <Label Text="Back" TextColor="#0A8491" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" />
             </HorizontalStackLayout>
 
             <Label Grid.Column="1" Text="PASS Assessment Quiz" TextColor="#0F172A" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
-            <Label Grid.Column="2" Text="📋" FontSize="20" VerticalOptions="Center" />
+            <Label Grid.Column="2" Text="Quiz" TextColor="#64748B" FontSize="12" FontAttributes="Bold" VerticalOptions="Center" />
         </Grid>
 
         <!-- Main Content Area -->
@@ -128,10 +127,10 @@
                     <Button Text="Previous" TextColor="#0A8491" BackgroundColor="#FFFFFF" BorderColor="#0A8491" BorderWidth="1.5" CornerRadius="12" HeightRequest="48" FontSize="15" FontAttributes="Bold"
                             Command="{Binding PreviousCommand}" IsEnabled="{Binding CanGoPrevious}" />
                     
-                    <Button Grid.Column="1" Text="Next Question →" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="12" HeightRequest="48" FontSize="15" FontAttributes="Bold"
+                    <Button Grid.Column="1" Text="Next Question" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="12" HeightRequest="48" FontSize="15" FontAttributes="Bold"
                             Command="{Binding NextCommand}" IsEnabled="{Binding CanGoNext}" IsVisible="{Binding IsNotLastQuestion}" />
 
-                    <Button Grid.Column="1" Text="Calculate Score 🎉" TextColor="#FFFFFF" BackgroundColor="#16A34A" CornerRadius="12" HeightRequest="48" FontSize="15" FontAttributes="Bold"
+                    <Button Grid.Column="1" Text="Calculate Score" TextColor="#FFFFFF" BackgroundColor="#16A34A" CornerRadius="12" HeightRequest="48" FontSize="15" FontAttributes="Bold"
                             Command="{Binding SubmitCommand}" IsEnabled="{Binding CanSubmit}" IsVisible="{Binding IsLastQuestion}" />
                 </Grid>
             </Grid>
@@ -141,7 +140,7 @@
                 <VerticalStackLayout Spacing="24" VerticalOptions="Center" HorizontalOptions="Center">
                     
                     <Border WidthRequest="90" HeightRequest="90" StrokeThickness="4" Stroke="#16A34A" StrokeShape="RoundRectangle 45" BackgroundColor="#DCFCE7" HorizontalOptions="Center">
-                        <Label Text="✓" TextColor="#16A34A" FontSize="46" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                        <Label Text="PASSED" TextColor="#16A34A" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
                     </Border>
 
                     <VerticalStackLayout Spacing="8" HorizontalOptions="Center">

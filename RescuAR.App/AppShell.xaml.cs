@@ -12,6 +12,5 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("Prepare/EvacuationCenterInfo", typeof(Views.Prepare.EvacuationCenterInfoPage));
         Routing.RegisterRoute("Prepare/HotlineDirectory", typeof(Views.Prepare.EvacuationCenterInfoPage));
         Routing.RegisterRoute("ProfilePage", typeof(Views.Profile.ProfilePage));
-        Routing.RegisterRoute("Reports/CommunityPosting", typeof(Views.Reports.CommunityPostingPage));
     }
 }

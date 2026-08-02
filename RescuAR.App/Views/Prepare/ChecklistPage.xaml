@@ -86,7 +86,7 @@
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SelectCategoryCommand}" CommandParameter="Food &amp; Water" />
                                 </Border.GestureRecognizers>
-                                <Label Text="💧 Food &amp; Water" TextColor="#0F172A" FontSize="13" FontAttributes="Bold">
+                                <Label Text="Food &amp; Water" TextColor="#0F172A" FontSize="13" FontAttributes="Bold">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding SelectedCategory}" Value="Food &amp; Water">
                                             <Setter Property="TextColor" Value="#FFFFFF" />
@@ -106,7 +106,7 @@
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SelectCategoryCommand}" CommandParameter="Medical &amp; Safety" />
                                 </Border.GestureRecognizers>
-                                <Label Text="🩹 Medical &amp; Safety" TextColor="#0F172A" FontSize="13" FontAttributes="Bold">
+                                <Label Text="Medical &amp; Safety" TextColor="#0F172A" FontSize="13" FontAttributes="Bold">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding SelectedCategory}" Value="Medical &amp; Safety">
                                             <Setter Property="TextColor" Value="#FFFFFF" />
@@ -126,7 +126,7 @@
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SelectCategoryCommand}" CommandParameter="Tools &amp; Power" />
                                 </Border.GestureRecognizers>
-                                <Label Text="🔦 Tools &amp; Power" TextColor="#0F172A" FontSize="13" FontAttributes="Bold">
+                                <Label Text="Tools &amp; Power" TextColor="#0F172A" FontSize="13" FontAttributes="Bold">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding SelectedCategory}" Value="Tools &amp; Power">
                                             <Setter Property="TextColor" Value="#FFFFFF" />
@@ -146,7 +146,7 @@
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SelectCategoryCommand}" CommandParameter="Documents" />
                                 </Border.GestureRecognizers>
-                                <Label Text="📄 Documents" TextColor="#0F172A" FontSize="13" FontAttributes="Bold">
+                                <Label Text="Documents" TextColor="#0F172A" FontSize="13" FontAttributes="Bold">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding SelectedCategory}" Value="Documents">
                                             <Setter Property="TextColor" Value="#FFFFFF" />
@@ -170,17 +170,16 @@
                                 </Border.GestureRecognizers>
                                 <Grid ColumnDefinitions="Auto,*,Auto" Padding="14" ColumnSpacing="14" VerticalOptions="Center">
                                     
-                                    <!-- Icon + Custom Checkbox -->
-                                    <Grid Grid.Column="0" WidthRequest="44" HeightRequest="44" VerticalOptions="Center">
-                                        <Border WidthRequest="44" HeightRequest="44" StrokeShape="RoundRectangle 22" StrokeThickness="0" BackgroundColor="#F1F5F9">
-                                            <Border.Triggers>
-                                                <DataTrigger TargetType="Border" Binding="{Binding IsCompleted}" Value="True">
-                                                    <Setter Property="BackgroundColor" Value="#DCFCE7" />
-                                                </DataTrigger>
-                                            </Border.Triggers>
-                                            <Label Text="{Binding Icon}" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
-                                        </Border>
-                                    </Grid>
+                                    <!-- Check Status Circle -->
+                                    <Border Grid.Column="0" WidthRequest="28" HeightRequest="28" StrokeShape="RoundRectangle 14" StrokeThickness="1.5" Stroke="#CBD5E1" BackgroundColor="Transparent" VerticalOptions="Center">
+                                        <Border.Triggers>
+                                            <DataTrigger TargetType="Border" Binding="{Binding IsCompleted}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="#16A34A" />
+                                                <Setter Property="Stroke" Value="#16A34A" />
+                                            </DataTrigger>
+                                        </Border.Triggers>
+                                        <Label Text="OK" TextColor="#FFFFFF" FontSize="9" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding IsCompleted}" />
+                                    </Border>
                                     
                                     <!-- Title & Description -->
                                     <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
@@ -195,16 +194,7 @@
                                         <Label Text="{Binding Description}" TextColor="#64748B" FontSize="12" LineBreakMode="WordWrap" />
                                     </VerticalStackLayout>
                                     
-                                    <!-- Check Status Pill -->
-                                    <Border Grid.Column="2" WidthRequest="28" HeightRequest="28" StrokeShape="RoundRectangle 14" StrokeThickness="1.5" Stroke="#CBD5E1" BackgroundColor="Transparent" VerticalOptions="Center">
-                                        <Border.Triggers>
-                                            <DataTrigger TargetType="Border" Binding="{Binding IsCompleted}" Value="True">
-                                                <Setter Property="BackgroundColor" Value="#16A34A" />
-                                                <Setter Property="Stroke" Value="#16A34A" />
-                                            </DataTrigger>
-                                        </Border.Triggers>
-                                        <Label Text="✓" TextColor="#FFFFFF" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding IsCompleted}" />
-                                    </Border>
+                                    <Label Grid.Column="2" Text="{Binding Category}" TextColor="#64748B" FontSize="11" VerticalOptions="Center" />
                                 </Grid>
                             </Border>
                         </DataTemplate>
@@ -212,7 +202,7 @@
                 </VerticalStackLayout>
 
                 <!-- Next Steps Button -->
-                <Button Text="Proceed to Evacuation Center Info →" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="12" HeightRequest="48" FontSize="14" FontAttributes="Bold"
+                <Button Text="Proceed to Evacuation Center Info" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="12" HeightRequest="48" FontSize="14" FontAttributes="Bold"
                         Command="{Binding NavigateToEvacuationCentersCommand}" Margin="0,8,0,20" />
 
             </VerticalStackLayout>

@@ -11,116 +11,112 @@
     Shell.NavBarIsVisible="False">
 
     <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding="20">
+        <VerticalStackLayout Spacing="16" Padding="16">
             
-            <!-- App Header & User Greeting Card -->
-            <Border BackgroundColor="#0A8491" StrokeThickness="0" StrokeShape="RoundRectangle 20" Padding="20">
-                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto" RowSpacing="14">
-                    <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="2">
-                        <Label Text="{Binding Greeting}" TextColor="#E0F2FE" FontSize="13" FontAttributes="Bold" />
-                        <Label Text="{Binding UserName, StringFormat='{0} 👋'}" TextColor="#FFFFFF" FontSize="26" FontAttributes="Bold" />
-                    </VerticalStackLayout>
+            <!-- Bento Box Grid Section -->
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,*" RowSpacing="12" ColumnSpacing="12">
+                
+                <!-- Bento Tile 1: Top Hero User Greeting Banner (Span 2 Columns) -->
+                <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#0A8491" StrokeThickness="0" StrokeShape="RoundRectangle 20" Padding="20">
+                    <VerticalStackLayout Spacing="16">
+                        <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
+                            <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                <Label Text="{Binding Greeting}" TextColor="#E0F2FE" FontSize="13" FontAttributes="Bold" />
+                                <Label Text="{Binding UserName}" TextColor="#FFFFFF" FontSize="26" FontAttributes="Bold" LineBreakMode="WordWrap" />
+                            </VerticalStackLayout>
 
-                    <!-- Avatar Button -->
-                    <Border Grid.Row="0" Grid.Column="1" StrokeShape="RoundRectangle 24" StrokeThickness="2" Stroke="#E0F2FE" BackgroundColor="#14B8A6" WidthRequest="48" HeightRequest="48" VerticalOptions="Center">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding OpenProfileCommand}" />
-                        </Border.GestureRecognizers>
-                        <Label Text="👤" FontSize="22" HorizontalOptions="Center" VerticalOptions="Center" />
-                    </Border>
-
-                    <!-- Emergency Status Banner -->
-                    <Border Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="#0F766E" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="12,8">
-                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10" VerticalOptions="Center">
-                            <Label Text="🌊" FontSize="18" VerticalOptions="Center" />
-                            <Label Grid.Column="1" Text="Marikina River: Level 1 (Standby)" TextColor="#FFFFFF" FontSize="12" FontAttributes="Bold" VerticalOptions="Center" />
-                            <Border Grid.Column="2" BackgroundColor="#22C55E" StrokeThickness="0" StrokeShape="RoundRectangle 6" Padding="6,2">
-                                <Label Text="Monitoring" TextColor="#FFFFFF" FontSize="10" FontAttributes="Bold" />
+                            <!-- Profile Avatar Badge -->
+                            <Border Grid.Column="1" StrokeShape="RoundRectangle 22" StrokeThickness="1.5" Stroke="#E0F2FE" BackgroundColor="#14B8A6" WidthRequest="44" HeightRequest="44" VerticalOptions="Center">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OpenProfileCommand}" />
+                                </Border.GestureRecognizers>
+                                <Label Text="USER" TextColor="#FFFFFF" FontSize="10" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
                             </Border>
                         </Grid>
-                    </Border>
-                </Grid>
-            </Border>
 
-            <!-- Preparation Score Quick Card -->
-            <Border BackgroundColor="#FFFFFF" StrokeThickness="1" Stroke="#E2E8F0" StrokeShape="RoundRectangle 16" Padding="16">
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding OpenPASSCommand}" />
-                </Border.GestureRecognizers>
-                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16" VerticalOptions="Center">
-                    <VerticalStackLayout Spacing="6" VerticalOptions="Center">
-                        <HorizontalStackLayout Spacing="6">
-                            <Label Text="🛡️ PASS Preparedness" TextColor="#0F172A" FontSize="14" FontAttributes="Bold" />
-                            <Label Text="{Binding PreparednessStatus, StringFormat='({0})'}" TextColor="#0A8491" FontSize="12" FontAttributes="Bold" />
-                        </HorizontalStackLayout>
-                        <ProgressBar Progress="{Binding ScoreProgress}" ProgressColor="#0A8491" HeightRequest="8" WidthRequest="200" HorizontalOptions="Start" />
+                        <!-- Emergency Status Banner inside Hero -->
+                        <Border BackgroundColor="#0F766E" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="12,10">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10" VerticalOptions="Center">
+                                <Label Text="Marikina River: Level 1 (Standby)" TextColor="#FFFFFF" FontSize="12" FontAttributes="Bold" VerticalOptions="Center" LineBreakMode="WordWrap" />
+                                <Border Grid.Column="1" BackgroundColor="#22C55E" StrokeThickness="0" StrokeShape="RoundRectangle 6" Padding="8,4" VerticalOptions="Center">
+                                    <Label Text="Monitoring" TextColor="#FFFFFF" FontSize="10" FontAttributes="Bold" />
+                                </Border>
+                            </Grid>
+                        </Border>
                     </VerticalStackLayout>
+                </Border>
 
-                    <HorizontalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
-                        <Label Text="{Binding PreparednessScore, StringFormat='{0}%'}" TextColor="#0A8491" FontSize="28" FontAttributes="Bold" VerticalOptions="Center" />
-                        <Label Text="➔" TextColor="#64748B" FontSize="18" VerticalOptions="Center" />
-                    </HorizontalStackLayout>
-                </Grid>
-            </Border>
+                <!-- Bento Tile 2: PASS Preparedness Score Card (Span 2 Columns, No Text Overlap!) -->
+                <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#FFFFFF" StrokeThickness="1" Stroke="#E2E8F0" StrokeShape="RoundRectangle 16" Padding="18">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenPASSCommand}" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16" VerticalOptions="Center">
+                        
+                        <!-- Left Details Column -->
+                        <VerticalStackLayout Grid.Column="0" Spacing="6" VerticalOptions="Center">
+                            <Label Text="PASS Preparedness" TextColor="#0F172A" FontSize="15" FontAttributes="Bold" />
+                            
+                            <Border BackgroundColor="#E0F2FE" StrokeThickness="0" StrokeShape="RoundRectangle 8" Padding="8,3" HorizontalOptions="Start">
+                                <Label Text="{Binding PreparednessStatus}" TextColor="#0369A1" FontSize="11" FontAttributes="Bold" />
+                            </Border>
 
-            <!-- Quick Action Shortcuts -->
-            <VerticalStackLayout Spacing="10">
-                <Label Text="Quick Navigation" TextColor="#0F172A" FontSize="16" FontAttributes="Bold" />
-                
-                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
-                    <Border Grid.Column="0" BackgroundColor="#FFFFFF" Stroke="#E2E8F0" StrokeThickness="1" StrokeShape="RoundRectangle 14" Padding="12">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding OpenChecklistCommand}" />
-                        </Border.GestureRecognizers>
-                        <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
-                            <Label Text="📋" FontSize="26" HorizontalOptions="Center" />
-                            <Label Text="Kit Checklist" TextColor="#0F172A" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" />
+                            <ProgressBar Progress="{Binding ScoreProgress}" ProgressColor="#0A8491" HeightRequest="8" Margin="0,4,0,0" />
                         </VerticalStackLayout>
-                    </Border>
 
-                    <Border Grid.Column="1" BackgroundColor="#FFFFFF" Stroke="#E2E8F0" StrokeThickness="1" StrokeShape="RoundRectangle 14" Padding="12">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding OpenEvacuationCommand}" />
-                        </Border.GestureRecognizers>
-                        <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
-                            <Label Text="🏢" FontSize="26" HorizontalOptions="Center" />
-                            <Label Text="Evacuation" TextColor="#0F172A" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" />
+                        <!-- Right Clean Percentage Score -->
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" HorizontalOptions="End">
+                            <Label Text="{Binding PreparednessScore, StringFormat='{0}%'}" TextColor="#0A8491" FontSize="34" FontAttributes="Bold" HorizontalTextAlignment="End" VerticalOptions="Center" />
                         </VerticalStackLayout>
-                    </Border>
+                    </Grid>
+                </Border>
 
-                    <Border Grid.Column="2" BackgroundColor="#FFFFFF" Stroke="#E2E8F0" StrokeThickness="1" StrokeShape="RoundRectangle 14" Padding="12">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding OpenCommunityReportsCommand}" />
-                        </Border.GestureRecognizers>
-                        <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
-                            <Label Text="📡" FontSize="26" HorizontalOptions="Center" />
-                            <Label Text="Feed &amp; Reports" TextColor="#0F172A" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" />
-                        </VerticalStackLayout>
-                    </Border>
-                </Grid>
-            </VerticalStackLayout>
+                <!-- Bento Tile 3: Quick Action - Kit Checklist (Col 0) -->
+                <Border Grid.Row="2" Grid.Column="0" BackgroundColor="#FFFFFF" Stroke="#E2E8F0" StrokeThickness="1" StrokeShape="RoundRectangle 16" Padding="16">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenChecklistCommand}" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Border BackgroundColor="#F0FDFA" StrokeThickness="0" StrokeShape="RoundRectangle 8" Padding="6,2" HorizontalOptions="Start">
+                            <Label Text="CHECKLIST" TextColor="#0D9488" FontSize="10" FontAttributes="Bold" />
+                        </Border>
+                        <Label Text="Kit Checklist" TextColor="#0F172A" FontSize="15" FontAttributes="Bold" Margin="0,4,0,0" />
+                        <Label Text="10 Essential Supplies" TextColor="#64748B" FontSize="11" LineBreakMode="WordWrap" />
+                    </VerticalStackLayout>
+                </Border>
 
-            <!-- Area Status Overview Card -->
-            <dashboard:AreaStatusOverviewPage />
+                <!-- Bento Tile 4: Quick Action - Evacuation Centers (Col 1) -->
+                <Border Grid.Row="2" Grid.Column="1" BackgroundColor="#FFFFFF" Stroke="#E2E8F0" StrokeThickness="1" StrokeShape="RoundRectangle 16" Padding="16">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenEvacuationCommand}" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Border BackgroundColor="#EFF6FF" StrokeThickness="0" StrokeShape="RoundRectangle 8" Padding="6,2" HorizontalOptions="Start">
+                            <Label Text="SHELTERS" TextColor="#2563EB" FontSize="10" FontAttributes="Bold" />
+                        </Border>
+                        <Label Text="Evacuation Centers" TextColor="#0F172A" FontSize="15" FontAttributes="Bold" Margin="0,4,0,0" />
+                        <Label Text="Real-Time Capacity" TextColor="#64748B" FontSize="11" LineBreakMode="WordWrap" />
+                    </VerticalStackLayout>
+                </Border>
 
-            <!-- Weather Card -->
-            <dashboard:WeatherInformationPage />
+                <!-- Bento Tile 5: Area Status Overview Card (Span 2 Columns) -->
+                <ContentView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                    <dashboard:AreaStatusOverviewPage />
+                </ContentView>
 
-            <!-- Disaster Modules Grid Section -->
-            <VerticalStackLayout Spacing="12">
-                <Label Text="Modules Overview" TextColor="#0F172A" FontSize="16" FontAttributes="Bold" />
-                
-                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12" RowSpacing="12">
-                    <dashboard:DisasterInformationPage Grid.Row="0" Grid.Column="0" />
-                    <dashboard:AdvisoriesActivePage Grid.Row="0" Grid.Column="1" />
-                    <dashboard:PreparednessOverviewPage Grid.Row="1" Grid.Column="0" />
-                    <dashboard:EvacuationOverviewPage Grid.Row="1" Grid.Column="1" />
-                    <dashboard:SafetyCircleOverviewPage Grid.Row="2" Grid.Column="0" />
-                    <dashboard:CommunityReportsOverviewPage Grid.Row="2" Grid.Column="1" />
-                </Grid>
-            </VerticalStackLayout>
+                <!-- Bento Tile 6: Weather Card (Col 0) -->
+                <ContentView Grid.Row="4" Grid.Column="0">
+                    <dashboard:WeatherInformationPage />
+                </ContentView>
 
-            <!-- Preparation Assessment Card Widget -->
+                <!-- Bento Tile 7: Preparedness Overview Card (Col 1) -->
+                <ContentView Grid.Row="4" Grid.Column="1">
+                    <dashboard:PreparednessOverviewPage />
+                </ContentView>
+
+            </Grid>
+
+            <!-- Bottom PASS Widget -->
             <dashboard:PASSOverviewPage />
 
         </VerticalStackLayout>

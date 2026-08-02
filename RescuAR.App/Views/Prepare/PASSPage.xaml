@@ -23,14 +23,11 @@
                     <Label Text="Evaluate your emergency readiness with our interactive score system." TextColor="#475569" FontSize="14" />
                 </VerticalStackLayout>
 
-                <!-- Hero Score Card with Gradient Accent -->
+                <!-- Hero Score Card -->
                 <Border BackgroundColor="#FFFFFF" StrokeThickness="1" Stroke="#E2E8F0" StrokeShape="RoundRectangle 16">
                     <VerticalStackLayout Padding="20" Spacing="16">
                         <Grid ColumnDefinitions="*,Auto">
-                            <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-                                <Label Text="🛡️" FontSize="18" VerticalOptions="Center" />
-                                <Label Text="Overall Preparedness" TextColor="#0F172A" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" />
-                            </HorizontalStackLayout>
+                            <Label Text="Overall Preparedness" TextColor="#0F172A" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" />
                             <Border Grid.Column="1" BackgroundColor="{Binding StatusBadgeBg}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="10,5">
                                 <Label Text="{Binding ScoreStatus}" TextColor="{Binding StatusColor}" FontSize="12" FontAttributes="Bold" />
                             </Border>
@@ -48,7 +45,7 @@
                         <Label Text="{Binding LastAssessedText}" TextColor="#94A3B8" FontSize="11" />
 
                         <!-- Retake Button -->
-                        <Button Text="📝 Take Interactive Assessment" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="12" HeightRequest="48" FontSize="14" FontAttributes="Bold"
+                        <Button Text="Take Interactive Assessment" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="12" HeightRequest="48" FontSize="14" FontAttributes="Bold"
                                 Command="{Binding StartAssessmentCommand}" Margin="0,4,0,0" />
                     </VerticalStackLayout>
                 </Border>
@@ -60,9 +57,8 @@
                             <TapGestureRecognizer Command="{Binding NavigateToChecklistCommand}" />
                         </Border.GestureRecognizers>
                         <VerticalStackLayout Spacing="6">
-                            <Label Text="📋" FontSize="24" />
                             <Label Text="Kit Checklist" TextColor="#166534" FontSize="14" FontAttributes="Bold" />
-                            <Label Text="Track 10 essential supplies" TextColor="#15803D" FontSize="11" />
+                            <Label Text="Track essential supplies" TextColor="#15803D" FontSize="11" />
                         </VerticalStackLayout>
                     </Border>
 
@@ -71,7 +67,6 @@
                             <TapGestureRecognizer Command="{Binding NavigateToEvacuationCommand}" />
                         </Border.GestureRecognizers>
                         <VerticalStackLayout Spacing="6">
-                            <Label Text="🏢" FontSize="24" />
                             <Label Text="Evacuation Info" TextColor="#1E40AF" FontSize="14" FontAttributes="Bold" />
                             <Label Text="Find centers &amp; hotlines" TextColor="#1D4ED8" FontSize="11" />
                         </VerticalStackLayout>
@@ -89,28 +84,33 @@
                                 <Grid.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding ToggleEmergencySuppliesCommand}" />
                                 </Grid.GestureRecognizers>
-                                <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
-                                    <Label Text="📦" FontSize="18" VerticalOptions="Center" />
-                                    <Label Text="Emergency Supplies (85%)" TextColor="#0F172A" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" />
-                                </HorizontalStackLayout>
-                                <Label Grid.Column="1" Text="▼" TextColor="#64748B" FontSize="14" VerticalOptions="Center" />
+                                <Label Text="Emergency Supplies (85%)" TextColor="#0F172A" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" />
+                                <Label Grid.Column="1" Text="[Collapse]" TextColor="#64748B" FontSize="12" VerticalOptions="Center" />
                             </Grid>
                             
                             <VerticalStackLayout Padding="16,0,16,16" Spacing="10" IsVisible="{Binding IsEmergencySuppliesExpanded}">
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
-                                    <Label Text="✓" TextColor="#22C55E" FontSize="16" FontAttributes="Bold" />
+                                    <Border WidthRequest="18" HeightRequest="18" StrokeShape="RoundRectangle 9" BackgroundColor="#DCFCE7" StrokeThickness="0" VerticalOptions="Center">
+                                        <Label Text="Y" TextColor="#16A34A" FontSize="10" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    </Border>
                                     <Label Grid.Column="1" Text="Water Supply (3-day storage)" TextColor="#334155" FontSize="13" />
                                 </Grid>
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
-                                    <Label Text="✓" TextColor="#22C55E" FontSize="16" FontAttributes="Bold" />
+                                    <Border WidthRequest="18" HeightRequest="18" StrokeShape="RoundRectangle 9" BackgroundColor="#DCFCE7" StrokeThickness="0" VerticalOptions="Center">
+                                        <Label Text="Y" TextColor="#16A34A" FontSize="10" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    </Border>
                                     <Label Grid.Column="1" Text="First Aid &amp; Medication Kit" TextColor="#334155" FontSize="13" />
                                 </Grid>
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
-                                    <Label Text="✓" TextColor="#22C55E" FontSize="16" FontAttributes="Bold" />
+                                    <Border WidthRequest="18" HeightRequest="18" StrokeShape="RoundRectangle 9" BackgroundColor="#DCFCE7" StrokeThickness="0" VerticalOptions="Center">
+                                        <Label Text="Y" TextColor="#16A34A" FontSize="10" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    </Border>
                                     <Label Grid.Column="1" Text="Flashlight &amp; Backup Power Bank" TextColor="#334155" FontSize="13" />
                                 </Grid>
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
-                                    <Label Text="✗" TextColor="#EF4444" FontSize="16" FontAttributes="Bold" />
+                                    <Border WidthRequest="18" HeightRequest="18" StrokeShape="RoundRectangle 9" BackgroundColor="#FEE2E2" StrokeThickness="0" VerticalOptions="Center">
+                                        <Label Text="N" TextColor="#DC2626" FontSize="10" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    </Border>
                                     <Label Grid.Column="1" Text="Portable Battery Radio missing" TextColor="#64748B" FontSize="13" />
                                 </Grid>
                             </VerticalStackLayout>
@@ -124,24 +124,27 @@
                                 <Grid.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding ToggleEvacuationReadinessCommand}" />
                                 </Grid.GestureRecognizers>
-                                <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
-                                    <Label Text="🗺️" FontSize="18" VerticalOptions="Center" />
-                                    <Label Text="Evacuation Readiness (60%)" TextColor="#0F172A" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" />
-                                </HorizontalStackLayout>
-                                <Label Grid.Column="1" Text="▼" TextColor="#64748B" FontSize="14" VerticalOptions="Center" />
+                                <Label Text="Evacuation Readiness (60%)" TextColor="#0F172A" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" />
+                                <Label Grid.Column="1" Text="[Collapse]" TextColor="#64748B" FontSize="12" VerticalOptions="Center" />
                             </Grid>
 
                             <VerticalStackLayout Padding="16,0,16,16" Spacing="10" IsVisible="{Binding IsEvacuationReadinessExpanded}">
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
-                                    <Label Text="✓" TextColor="#22C55E" FontSize="16" FontAttributes="Bold" />
+                                    <Border WidthRequest="18" HeightRequest="18" StrokeShape="RoundRectangle 9" BackgroundColor="#DCFCE7" StrokeThickness="0" VerticalOptions="Center">
+                                        <Label Text="Y" TextColor="#16A34A" FontSize="10" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    </Border>
                                     <Label Grid.Column="1" Text="Nearest evacuation center identified" TextColor="#334155" FontSize="13" />
                                 </Grid>
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
-                                    <Label Text="✓" TextColor="#22C55E" FontSize="16" FontAttributes="Bold" />
+                                    <Border WidthRequest="18" HeightRequest="18" StrokeShape="RoundRectangle 9" BackgroundColor="#DCFCE7" StrokeThickness="0" VerticalOptions="Center">
+                                        <Label Text="Y" TextColor="#16A34A" FontSize="10" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    </Border>
                                     <Label Grid.Column="1" Text="Interactive OSM route mapped" TextColor="#334155" FontSize="13" />
                                 </Grid>
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
-                                    <Label Text="✗" TextColor="#EF4444" FontSize="16" FontAttributes="Bold" />
+                                    <Border WidthRequest="18" HeightRequest="18" StrokeShape="RoundRectangle 9" BackgroundColor="#FEE2E2" StrokeThickness="0" VerticalOptions="Center">
+                                        <Label Text="N" TextColor="#DC2626" FontSize="10" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    </Border>
                                     <Label Grid.Column="1" Text="Family emergency meeting point undefined" TextColor="#64748B" FontSize="13" />
                                 </Grid>
                             </VerticalStackLayout>

@@ -190,9 +190,6 @@
 		<MauiXaml Update="Views\Reports\AdvisoryFeedPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\Reports\CommunityPostingPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
 		<MauiXaml Update="Views\Reports\ConnectivityMonitoringPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
