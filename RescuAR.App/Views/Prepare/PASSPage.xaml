@@ -210,23 +210,6 @@
                 <VerticalStackLayout Spacing="12">
                     <Label Text="Recommendation Actions" TextColor="#000000" FontSize="16" FontAttributes="Bold" />
 
-                    <!-- Action 1: Practice AR Route -->
-                    <Border StrokeShape="RoundRectangle 8" StrokeThickness="0" BackgroundColor="#FFFFFF">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding StartARRouteCommand}" />
-                        </Border.GestureRecognizers>
-                        <Grid ColumnDefinitions="Auto,*,Auto" Padding="12" ColumnSpacing="12" VerticalOptions="Center">
-                            <Border StrokeShape="RoundRectangle 8" StrokeThickness="0" BackgroundColor="#F2F2F7" WidthRequest="40" HeightRequest="40">
-                                <Label Text="🕶️" FontSize="18" HorizontalOptions="Center" VerticalOptions="Center" />
-                            </Border>
-                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
-                                <Label Text="Practice AR Route" TextColor="#000000" FontSize="14" FontAttributes="Bold" />
-                                <Label Text="Prepare / Preparedness Tools / AR Route Practice" TextColor="#7F7F7F" FontSize="10" />
-                            </VerticalStackLayout>
-                            <Label Grid.Column="2" Text="&gt;" TextColor="#7F7F7F" FontSize="16" VerticalOptions="Center" Margin="0,0,4,0" />
-                        </Grid>
-                    </Border>
-
                     <!-- Action 2: Open Emergency Checklist -->
                     <Border StrokeShape="RoundRectangle 8" StrokeThickness="0" BackgroundColor="#FFFFFF">
                         <Border.GestureRecognizers>

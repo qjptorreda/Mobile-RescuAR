@@ -98,14 +98,4 @@ public partial class PASSViewModel : ObservableObject
             await Shell.Current.GoToAsync("Prepare/EvacuationCenterInfo");
         }
     }
-
-    [RelayCommand]
-    private async Task StartARRouteAsync()
-    {
-        if (Shell.Current != null)
-        {
-            // Shell tab navigation to Camera
-            await Shell.Current.GoToAsync("//Camera");
-        }
-    }
 }
