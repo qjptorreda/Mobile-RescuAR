@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Storage;
 
 namespace RescuAR.App.ViewModels.Prepare;
 
@@ -18,7 +19,25 @@ public class AssessmentHistoryItem
 public partial class PASSViewModel : ObservableObject
 {
     [ObservableProperty]
-    public partial bool IsModalVisible { get; set; } = false; // Set to false by default, can be toggled by user
+    public partial bool IsModalVisible { get; set; } = false;
+
+    [ObservableProperty]
+    public partial int ScorePercentage { get; set; } = 72;
+
+    [ObservableProperty]
+    public partial double ProgressValue { get; set; } = 0.72;
+
+    [ObservableProperty]
+    public partial string ScoreStatus { get; set; } = "Prepared";
+
+    [ObservableProperty]
+    public partial string StatusColor { get; set; } = "#385723";
+
+    [ObservableProperty]
+    public partial string StatusBadgeBg { get; set; } = "#E2F0D9";
+
+    [ObservableProperty]
+    public partial string LastAssessedText { get; set; } = "Last assessed June 15, 2026";
 
     [ObservableProperty]
     public partial bool IsEmergencySuppliesExpanded { get; set; } = true;
@@ -36,9 +55,41 @@ public partial class PASSViewModel : ObservableObject
 
     public PASSViewModel()
     {
-        History.Add(new AssessmentHistoryItem { Date = "June 03, 2026 (72%)", ScoreText = "72%", Status = "Prepared", StatusColor = "#22C55E" });
-        History.Add(new AssessmentHistoryItem { Date = "May 16, 2026 (65%)", ScoreText = "65%", Status = "Partially Prepared", StatusColor = "#E2B93B" });
-        History.Add(new AssessmentHistoryItem { Date = "April 21, 2026 (58%)", ScoreText = "58%", Status = "Partially Prepared", StatusColor = "#E2B93B" });
+        RefreshScore();
+        LoadHistory();
+    }
+
+    public void RefreshScore()
+    {
+        ScorePercentage = Preferences.Get("PASS_Score", 72);
+        ProgressValue = ScorePercentage / 100.0;
+        ScoreStatus = Preferences.Get("PASS_Status", "Prepared");
+        string date = Preferences.Get("PASS_LastDate", "June 15, 2026");
+        LastAssessedText = $"Last assessed {date}";
+
+        if (ScorePercentage >= 80)
+        {
+            StatusColor = "#15803D";
+            StatusBadgeBg = "#DCFCE7";
+        }
+        else if (ScorePercentage >= 60)
+        {
+            StatusColor = "#0A8491";
+            StatusBadgeBg = "#E0F2FE";
+        }
+        else
+        {
+            StatusColor = "#B45309";
+            StatusBadgeBg = "#FEF3C7";
+        }
+    }
+
+    private void LoadHistory()
+    {
+        History.Clear();
+        History.Add(new AssessmentHistoryItem { Date = "June 15, 2026", ScoreText = "72%", Status = "Prepared", StatusColor = "#0A8491" });
+        History.Add(new AssessmentHistoryItem { Date = "May 20, 2026", ScoreText = "65%", Status = "Partially Prepared", StatusColor = "#D97706" });
+        History.Add(new AssessmentHistoryItem { Date = "April 10, 2026", ScoreText = "58%", Status = "Needs Work", StatusColor = "#DC2626" });
     }
 
     [RelayCommand]
