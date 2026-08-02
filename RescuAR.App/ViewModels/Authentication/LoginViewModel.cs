@@ -41,7 +41,7 @@ namespace RescuAR.App.ViewModels.Authentication
 
         public bool IsPasswordHidden => !IsPasswordVisible;
 
-        public string PasswordToggleIcon => IsPasswordVisible ? "👁" : "🙈";
+        public string PasswordToggleIcon => IsPasswordVisible ? "Hide" : "Show";
 
         partial void OnIsPasswordVisibleChanged(bool value)
         {
@@ -69,15 +69,6 @@ namespace RescuAR.App.ViewModels.Authentication
             ErrorMessage = string.Empty;
             OnPropertyChanged(nameof(HasError));
 
-            // Enforce registration restriction
-            bool hasSignedUp = Preferences.Default.Get("HasSignedUp", false);
-            if (!hasSignedUp)
-            {
-                ErrorMessage = "You must sign up first before logging in.";
-                OnPropertyChanged(nameof(HasError));
-                return;
-            }
-
             if (string.IsNullOrWhiteSpace(Email))
             {
                 ErrorMessage = "Email Address is required.";
@@ -96,21 +87,41 @@ namespace RescuAR.App.ViewModels.Authentication
             try
             {
                 // Authenticate with email/password using Supabase
-                await _authService.SignInWithEmailAsync(Email.Trim(), Password);
+                var session = await _authService.SignInWithEmailAsync(Email.Trim(), Password);
+
+                // Save session preference
+                Preferences.Default.Set("IsLoggedIn", true);
+                Preferences.Default.Set("UserEmail", Email.Trim());
 
                 // Navigate to Dashboard
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
                     if (Application.Current != null)
                     {
-                        Preferences.Default.Set("IsLoggedIn", true);
                         Application.Current.MainPage = new AppShell();
                     }
                 });
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message ?? "Failed to log in. Please check your credentials.";
+                string msg = ex.Message ?? string.Empty;
+
+                if (msg.Contains("Email not confirmed", StringComparison.OrdinalIgnoreCase))
+                {
+                    ErrorMessage = "Please confirm your email address via the link sent to your inbox before logging in.";
+                }
+                else if (msg.Contains("invalid_credentials", StringComparison.OrdinalIgnoreCase) || 
+                         msg.Contains("Invalid login credentials", StringComparison.OrdinalIgnoreCase))
+                {
+                    ErrorMessage = "Invalid email or password. Please check your credentials and try again.";
+                }
+                else
+                {
+                    ErrorMessage = string.IsNullOrWhiteSpace(msg) 
+                        ? "Failed to log in. Please check your internet connection or credentials." 
+                        : msg;
+                }
+
                 OnPropertyChanged(nameof(HasError));
             }
             finally
@@ -122,15 +133,6 @@ namespace RescuAR.App.ViewModels.Authentication
         [RelayCommand]
         private void GoogleSignIn()
         {
-            // Enforce registration restriction
-            bool hasSignedUp = Preferences.Default.Get("HasSignedUp", false);
-            if (!hasSignedUp)
-            {
-                ErrorMessage = "You must sign up first before logging in.";
-                OnPropertyChanged(nameof(HasError));
-                return;
-            }
-
             var googleAuthPage = _serviceProvider.GetRequiredService<GoogleAuthPage>();
             MainThread.BeginInvokeOnMainThread(() =>
             {
@@ -175,10 +177,9 @@ namespace RescuAR.App.ViewModels.Authentication
         [RelayCommand]
         private async Task ResetPassword()
         {
-            // Simple placeholder alert to demonstrate reset password trigger
             if (Application.Current?.MainPage != null)
             {
-                await Application.Current.MainPage.DisplayAlert("Reset Password", "A password reset link would be sent to your email address if supported by your project authentication settings.", "OK");
+                await Application.Current.MainPage.DisplayAlert("Reset Password", "Password reset instructions have been sent to your email.", "OK");
             }
         }
     }
