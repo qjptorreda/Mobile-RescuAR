@@ -6,77 +6,44 @@
     x:Class="RescuAR.App.Views.Dashboard.WeatherInformationPage"
     x:DataType="vm:WeatherInformationViewModel">
 
-    <VerticalStackLayout Spacing="8">
-        <!-- Section Header -->
-        <Label Text="Weather Forecast"
-               TextColor="#000000"
-               FontSize="14"
-               FontAttributes="Bold" />
+    <Border StrokeShape="RoundRectangle 16"
+            StrokeThickness="1"
+            Stroke="#E2E8F0"
+            BackgroundColor="#FFFFFF"
+            Padding="14"
+            VerticalOptions="Fill">
+        
+        <!-- Allow tap gesture to request location permission and refresh real-time weather -->
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding RequestLocationAndRefreshCommand}" />
+        </Border.GestureRecognizers>
 
-        <!-- Weather Card -->
-        <Border StrokeShape="RoundRectangle 16"
-                StrokeThickness="1"
-                Stroke="#E5E5EA"
-                BackgroundColor="#FFFFFF"
-                Padding="20">
-            
-            <!-- Allow tap gesture to request location permission and refresh real-time weather -->
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding RequestLocationAndRefreshCommand}" />
-            </Border.GestureRecognizers>
+        <VerticalStackLayout Spacing="6" VerticalOptions="Center">
+            <!-- Location Line -->
+            <Label Text="{Binding LocationName}"
+                   TextColor="#64748B"
+                   FontSize="11"
+                   FontAttributes="Bold"
+                   LineBreakMode="TailTruncation" />
 
-            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20" VerticalOptions="Center">
-                
-                <!-- Weather Details -->
-                <VerticalStackLayout Grid.Column="0" Spacing="4" VerticalOptions="Center">
-                    <!-- Location Line -->
-                    <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
-                        <Label Text="{Binding LocationName}"
-                               TextColor="#7F7F7F"
-                               FontSize="13" />
-                        <!-- Location Arrow symbol -->
-                        <Path Data="M12 2L4.5 20.29L5.21 21L12 18L18.79 21L19.5 20.29L12 2Z"
-                              Fill="#0A8491"
-                              WidthRequest="12"
-                              HeightRequest="12"
-                              Aspect="Uniform"
-                              VerticalOptions="Center">
-                            <Path.RenderTransform>
-                                <RotateTransform Angle="45" />
-                            </Path.RenderTransform>
-                        </Path>
-                    </HorizontalStackLayout>
+            <!-- Temperature Display -->
+            <Label Text="{Binding TemperatureDisplay}"
+                   TextColor="#0F172A"
+                   FontSize="26"
+                   FontAttributes="Bold" />
 
-                    <!-- Temperature -->
-                    <Label Text="{Binding TemperatureDisplay}"
-                           TextColor="#000000"
-                           FontSize="38"
-                           FontAttributes="Bold" />
+            <!-- Weather Description -->
+            <Label Text="{Binding ConditionDescription}"
+                   TextColor="#0F172A"
+                   FontSize="13"
+                   FontAttributes="Bold"
+                   LineBreakMode="WordWrap" />
 
-                    <!-- Weather Description -->
-                    <Label Text="{Binding ConditionDescription}"
-                           TextColor="#000000"
-                           FontSize="15"
-                           FontAttributes="Bold" />
-
-                    <!-- Weather Summary -->
-                    <Label Text="{Binding ConditionSummary}"
-                           TextColor="#7F7F7F"
-                           FontSize="13" />
-                </VerticalStackLayout>
-
-                <!-- Weather Icon (SVG vector) -->
-                <Path Grid.Column="1"
-                      Data="{Binding IconPathData}"
-                      Fill="#E5E5EA"
-                      Stroke="#0A8491"
-                      StrokeThickness="1.5"
-                      WidthRequest="64"
-                      HeightRequest="64"
-                      Aspect="Uniform"
-                      HorizontalOptions="Center"
-                      VerticalOptions="Center" />
-            </Grid>
-        </Border>
-    </VerticalStackLayout>
+            <!-- Weather Summary -->
+            <Label Text="{Binding ConditionSummary}"
+                   TextColor="#64748B"
+                   FontSize="11"
+                   LineBreakMode="WordWrap" />
+        </VerticalStackLayout>
+    </Border>
 </ContentView>
