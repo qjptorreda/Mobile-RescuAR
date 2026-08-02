@@ -23,6 +23,9 @@ public partial class EvacuationCenterItem : ObservableObject
     public string Distance { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
     public string VerifiedBy { get; set; } = string.Empty;
+    public string MapImageSource { get; set; } = string.Empty;
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CapacityText))]
@@ -67,7 +70,7 @@ public partial class EvacuationCenterInfoViewModel : ObservableObject
     public ObservableCollection<EvacuationCenterItem> EvacuationCenters { get; } = new();
 
     [ObservableProperty]
-    public partial string SelectedFilter { get; set; } = "All";
+    public partial string SelectedFilter { get; set; } = "Nearest";
 
     public EvacuationCenterInfoViewModel()
     {
@@ -85,30 +88,39 @@ public partial class EvacuationCenterInfoViewModel : ObservableObject
         EvacuationCenters.Clear();
         EvacuationCenters.Add(new EvacuationCenterItem 
         { 
-            Name = "Malanday Elementary School Gym", 
+            Name = "Malanday Elementary School", 
             Distance = "877 meters away", 
-            Address = "48 Visayas St., Malanday, Marikina City", 
-            VerifiedBy = "Marikina LGU Relief Command",
+            Address = "48 Visayas St., Malanday\nMarikina City 1805", 
+            VerifiedBy = "Marikina LGU",
             CurrentOccupancy = 210,
-            MaxCapacity = 500
+            MaxCapacity = 500,
+            Latitude = 14.6612,
+            Longitude = 121.0963,
+            MapImageSource = "https://staticmap.openstreetmap.de/staticmap.php?center=14.6612,121.0963&zoom=16&size=600x300&markers=14.6612,121.0963,red-pushpin"
         });
         EvacuationCenters.Add(new EvacuationCenterItem 
         { 
             Name = "San Roque High School Evacuation Facility", 
             Distance = "1.2 km away", 
-            Address = "Abad Santos St., San Roque, Marikina City", 
-            VerifiedBy = "Marikina LGU Relief Command",
+            Address = "Abad Santos St., San Roque\nMarikina City 1801", 
+            VerifiedBy = "Marikina LGU",
             CurrentOccupancy = 380,
-            MaxCapacity = 450
+            MaxCapacity = 450,
+            Latitude = 14.6258,
+            Longitude = 121.1042,
+            MapImageSource = "https://staticmap.openstreetmap.de/staticmap.php?center=14.6258,121.1042&zoom=16&size=600x300&markers=14.6258,121.1042,red-pushpin"
         });
         EvacuationCenters.Add(new EvacuationCenterItem 
         { 
             Name = "Concepcion Uno Covered Court", 
             Distance = "2.4 km away", 
-            Address = "J.P. Rizal St., Concepcion Uno, Marikina City", 
+            Address = "J.P. Rizal St., Concepcion Uno\nMarikina City 1807", 
             VerifiedBy = "Red Cross PH Verified",
             CurrentOccupancy = 120,
-            MaxCapacity = 300
+            MaxCapacity = 300,
+            Latitude = 14.6521,
+            Longitude = 121.1084,
+            MapImageSource = "https://staticmap.openstreetmap.de/staticmap.php?center=14.6521,121.1084&zoom=16&size=600x300&markers=14.6521,121.1084,red-pushpin"
         });
     }
 
@@ -140,6 +152,15 @@ public partial class EvacuationCenterInfoViewModel : ObservableObject
             {
                 await Shell.Current.DisplayAlert("Center Full", $"{center.Name} has reached max capacity! Please check nearby centers.", "OK");
             }
+        }
+    }
+
+    [RelayCommand]
+    private async Task ViewMoreDetailsAsync(EvacuationCenterItem center)
+    {
+        if (Shell.Current != null)
+        {
+            await Shell.Current.GoToAsync("//Map");
         }
     }
 

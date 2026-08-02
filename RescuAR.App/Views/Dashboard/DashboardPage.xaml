@@ -14,7 +14,7 @@
         <VerticalStackLayout Spacing="16" Padding="16">
             
             <!-- Bento Box Grid Section -->
-            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,*" RowSpacing="12" ColumnSpacing="12">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,*" RowSpacing="12" ColumnSpacing="12">
                 
                 <!-- Bento Tile 1: Top Hero User Greeting Banner (Span 2 Columns) -->
                 <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#0A8491" StrokeThickness="0" StrokeShape="RoundRectangle 20" Padding="20">
@@ -46,8 +46,13 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <!-- Bento Tile 2: PASS Preparedness Score Card (Span 2 Columns, No Text Overlap!) -->
-                <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#FFFFFF" StrokeThickness="1" Stroke="#E2E8F0" StrokeShape="RoundRectangle 16" Padding="18">
+                <!-- Bento Tile 2: Weather Forecast (Full Width 2 Columns - exact reference design!) -->
+                <ContentView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                    <dashboard:WeatherInformationPage />
+                </ContentView>
+
+                <!-- Bento Tile 3: PASS Preparedness Score Card (Span 2 Columns) -->
+                <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#FFFFFF" StrokeThickness="1" Stroke="#E2E8F0" StrokeShape="RoundRectangle 18" Padding="18">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding OpenPASSCommand}" />
                     </Border.GestureRecognizers>
@@ -71,8 +76,8 @@
                     </Grid>
                 </Border>
 
-                <!-- Bento Tile 3: Quick Action - Kit Checklist (Col 0) -->
-                <Border Grid.Row="2" Grid.Column="0" BackgroundColor="#FFFFFF" Stroke="#E2E8F0" StrokeThickness="1" StrokeShape="RoundRectangle 16" Padding="16">
+                <!-- Bento Tile 4: Quick Action - Kit Checklist (Col 0) -->
+                <Border Grid.Row="3" Grid.Column="0" BackgroundColor="#FFFFFF" Stroke="#E2E8F0" StrokeThickness="1" StrokeShape="RoundRectangle 16" Padding="16">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding OpenChecklistCommand}" />
                     </Border.GestureRecognizers>
@@ -85,8 +90,8 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <!-- Bento Tile 4: Quick Action - Evacuation Centers (Col 1) -->
-                <Border Grid.Row="2" Grid.Column="1" BackgroundColor="#FFFFFF" Stroke="#E2E8F0" StrokeThickness="1" StrokeShape="RoundRectangle 16" Padding="16">
+                <!-- Bento Tile 5: Quick Action - Evacuation Centers (Col 1) -->
+                <Border Grid.Row="3" Grid.Column="1" BackgroundColor="#FFFFFF" Stroke="#E2E8F0" StrokeThickness="1" StrokeShape="RoundRectangle 16" Padding="16">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding OpenEvacuationCommand}" />
                     </Border.GestureRecognizers>
@@ -99,18 +104,13 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <!-- Bento Tile 5: Area Status Overview Card (Span 2 Columns) -->
-                <ContentView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                <!-- Bento Tile 6: Area Status Overview Card (Span 2 Columns) -->
+                <ContentView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
                     <dashboard:AreaStatusOverviewPage />
                 </ContentView>
 
-                <!-- Bento Tile 6: Weather Card (Col 0) -->
-                <ContentView Grid.Row="4" Grid.Column="0">
-                    <dashboard:WeatherInformationPage />
-                </ContentView>
-
-                <!-- Bento Tile 7: Preparedness Overview Card (Col 1) -->
-                <ContentView Grid.Row="4" Grid.Column="1">
+                <!-- Bento Tile 7: Preparation Progress Card (Span 2 Columns) -->
+                <ContentView Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
                     <dashboard:PreparednessOverviewPage />
                 </ContentView>
 
