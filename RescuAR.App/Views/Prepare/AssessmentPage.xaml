@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:RescuAR.App.ViewModels.Prepare"
+    x:Class="RescuAR.App.Views.Prepare.AssessmentPage"
+    Title="Preparation Assessment"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="#F2F2F7">
+
+    <ContentPage.BindingContext>
+        <vm:AssessmentViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="Auto,*">
+        
+        <!-- Custom Navigation Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" HeightRequest="56" Padding="16,0" BackgroundColor="#FFFFFF">
+            <!-- Back Button -->
+            <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
+                <HorizontalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}" />
+                </HorizontalStackLayout.GestureRecognizers>
+                <Label Text="&lt;" TextColor="#0A8491" FontSize="20" FontAttributes="Bold" VerticalOptions="Center" />
+                <Label Text="Back" TextColor="#0A8491" FontSize="16" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+
+            <!-- RescuAR App Title -->
+            <Label Grid.Column="1" Text="RescuAR" TextColor="#000000" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+
+            <!-- Bell Notification Icon -->
+            <Label Grid.Column="2" Text="🔔" FontSize="20" VerticalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer />
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Row="1">
+            
+            <!-- State 1: Questionnaire Flow -->
+            <Grid RowDefinitions="*,Auto" Padding="20" IsVisible="{Binding IsNotFinished}">
+                
+                <ScrollView Grid.Row="0">
+                    <VerticalStackLayout Spacing="24">
+                        <!-- Breadcrumbs -->
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Home/" TextColor="#7F7F7F" FontSize="12" />
+                            <Label Text="Preparation Assessment" TextColor="#000000" FontSize="32" FontAttributes="Bold" />
+                            <Label Text="Evaluate your overall preparedness for emergencies and evacuation." TextColor="#7F7F7F" FontSize="14" />
+                        </VerticalStackLayout>
+
+                        <!-- Progress Presentation -->
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="{Binding PercentText}" TextColor="#0A8491" FontSize="28" FontAttributes="Bold" />
+                            <ProgressBar Progress="{Binding ProgressValue}" ProgressColor="#0A8491" HeightRequest="8" />
+                        </VerticalStackLayout>
+
+                        <!-- Active Question Card -->
+                        <Border StrokeThickness="0" StrokeShape="RoundRectangle 12" BackgroundColor="#FFFFFF" Padding="20">
+                            <VerticalStackLayout Spacing="16">
+                                <Label Text="{Binding QuestionProgressText}" TextColor="#7F7F7F" FontSize="12" />
+                                <Label Text="{Binding CurrentQuestion.Category}" TextColor="#0F8068" FontSize="14" FontAttributes="Bold" />
+                                <Label Text="{Binding CurrentQuestion.QuestionText}" TextColor="#000000" FontSize="18" FontAttributes="Bold" LineBreakMode="WordWrap" />
+
+                                <!-- Option Choices Stack -->
+                                <VerticalStackLayout Spacing="10">
+                                    
+                                    <!-- Option 1 -->
+                                    <Border StrokeThickness="1" Stroke="#E5E5EA" StrokeShape="RoundRectangle 8" BackgroundColor="#FFFFFF" Padding="14,12">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SelectOptionCommand}" CommandParameter="1" />
+                                        </Border.GestureRecognizers>
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12" VerticalOptions="Center">
+                                            <!-- Custom Radio Selection Circle -->
+                                            <Border WidthRequest="22" HeightRequest="22" StrokeThickness="1" Stroke="#C7C7CC" StrokeShape="RoundRectangle 11" BackgroundColor="Transparent" VerticalOptions="Center">
+                                                <Border WidthRequest="12" HeightRequest="12" StrokeThickness="0" StrokeShape="RoundRectangle 6" BackgroundColor="#0A8491" IsVisible="{Binding IsOption1Selected}" VerticalOptions="Center" HorizontalOptions="Center" />
+                                            </Border>
+                                            <Label Grid.Column="1" Text="{Binding Option1Text}" TextColor="#000000" FontSize="15" VerticalOptions="Center" />
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Option 2 -->
+                                    <Border StrokeThickness="1" Stroke="#E5E5EA" StrokeShape="RoundRectangle 8" BackgroundColor="#FFFFFF" Padding="14,12">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SelectOptionCommand}" CommandParameter="2" />
+                                        </Border.GestureRecognizers>
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12" VerticalOptions="Center">
+                                            <!-- Custom Radio Selection Circle -->
+                                            <Border WidthRequest="22" HeightRequest="22" StrokeThickness="1" Stroke="#C7C7CC" StrokeShape="RoundRectangle 11" BackgroundColor="Transparent" VerticalOptions="Center">
+                                                <Border WidthRequest="12" HeightRequest="12" StrokeThickness="0" StrokeShape="RoundRectangle 6" BackgroundColor="#0A8491" IsVisible="{Binding IsOption2Selected}" VerticalOptions="Center" HorizontalOptions="Center" />
+                                            </Border>
+                                            <Label Grid.Column="1" Text="{Binding Option2Text}" TextColor="#000000" FontSize="15" VerticalOptions="Center" />
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Option 3 (Conditional) -->
+                                    <Border StrokeThickness="1" Stroke="#E5E5EA" StrokeShape="RoundRectangle 8" BackgroundColor="#FFFFFF" Padding="14,12" IsVisible="{Binding IsOption3Visible}">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SelectOptionCommand}" CommandParameter="3" />
+                                        </Border.GestureRecognizers>
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12" VerticalOptions="Center">
+                                            <!-- Custom Radio Selection Circle -->
+                                            <Border WidthRequest="22" HeightRequest="22" StrokeThickness="1" Stroke="#C7C7CC" StrokeShape="RoundRectangle 11" BackgroundColor="Transparent" VerticalOptions="Center">
+                                                <Border WidthRequest="12" HeightRequest="12" StrokeThickness="0" StrokeShape="RoundRectangle 6" BackgroundColor="#0A8491" IsVisible="{Binding IsOption3Selected}" VerticalOptions="Center" HorizontalOptions="Center" />
+                                            </Border>
+                                            <Label Grid.Column="1" Text="{Binding Option3Text}" TextColor="#000000" FontSize="15" VerticalOptions="Center" />
+                                        </Grid>
+                                    </Border>
+
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                </ScrollView>
+
+                <!-- Footer Navigation Buttons -->
+                <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="16" Padding="0,16,0,0" BackgroundColor="Transparent">
+                    <!-- Previous Button -->
+                    <Button Text="&lt; Previous" TextColor="#0A8491" BackgroundColor="Transparent" BorderColor="#0A8491" BorderWidth="1" CornerRadius="8" HeightRequest="46" FontSize="15" FontAttributes="Bold"
+                            Command="{Binding PreviousCommand}" IsEnabled="{Binding CanGoPrevious}" />
+                    
+                    <!-- Next Button -->
+                    <Button Grid.Column="1" Text="Next &gt;" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="8" HeightRequest="46" FontSize="15" FontAttributes="Bold"
+                            Command="{Binding NextCommand}" IsEnabled="{Binding CanGoNext}" IsVisible="{Binding IsNotLastQuestion}" />
+
+                    <!-- Submit Button -->
+                    <Button Grid.Column="1" Text="Submit &gt;" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="8" HeightRequest="46" FontSize="15" FontAttributes="Bold"
+                            Command="{Binding SubmitCommand}" IsEnabled="{Binding CanSubmit}" IsVisible="{Binding IsLastQuestion}" />
+                </Grid>
+            </Grid>
+
+            <!-- State 2: Congratulations Screen -->
+            <Grid Padding="24" IsVisible="{Binding IsFinished}" BackgroundColor="#FFFFFF">
+                <Grid RowDefinitions="*,Auto" VerticalOptions="Fill" HorizontalOptions="Fill">
+                    <!-- Centered Success Card -->
+                    <VerticalStackLayout Grid.Row="0" Spacing="24" VerticalOptions="Center" HorizontalOptions="Center">
+                        <!-- Green Outlined Checkmark Circle -->
+                        <Border WidthRequest="80" HeightRequest="80" StrokeThickness="4" Stroke="#0F8068" StrokeShape="RoundRectangle 40" BackgroundColor="Transparent" HorizontalOptions="Center">
+                            <Label Text="✓" TextColor="#0F8068" FontSize="40" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+
+                        <Label Text="Congratulations! You've successfully answered the assessment." TextColor="#000000" FontSize="20" FontAttributes="Bold" HorizontalTextAlignment="Center" LineBreakMode="WordWrap" />
+                        <Label Text="Proceed to the Preparation Assessment to view the detailed result." TextColor="#7F7F7F" FontSize="14" HorizontalTextAlignment="Center" LineBreakMode="WordWrap" />
+                    </VerticalStackLayout>
+
+                    <!-- Navigate Back Button -->
+                    <Button Grid.Row="1" Text="↗ Go to Preparation Assessment" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="8" HeightRequest="50" FontSize="15" FontAttributes="Bold" Margin="0,0,0,20"
+                            Command="{Binding GoToPreparationAssessmentCommand}" />
+                </Grid>
+            </Grid>
+            
+        </Grid>
+    </Grid>
+</ContentPage>

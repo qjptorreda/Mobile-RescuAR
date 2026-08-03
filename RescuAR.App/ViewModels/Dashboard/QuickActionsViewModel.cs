@@ -82,7 +82,12 @@ public partial class QuickActionsViewModel : ObservableObject
         {
             try
             {
-                await Shell.Current.GoToAsync(action.TargetRoute);
+                string route = action.TargetRoute;
+                if (route.StartsWith("//") && !route.Equals("//Camera") && !route.Equals("//Home"))
+                {
+                    route = route.Substring(2);
+                }
+                await Shell.Current.GoToAsync(route);
             }
             catch (Exception)
             {

@@ -106,8 +106,12 @@ public class WeatherService : IWeatherService
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            System.Diagnostics.Debug.WriteLine($"RESCUAR_WEATHER_ERROR: {ex}");
+#if ANDROID
+            Android.Util.Log.Error("RESCUAR_WEATHER", ex.ToString());
+#endif
         }
 
         return CreateWeatherData(24.0, 0, locationName);

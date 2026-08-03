@@ -189,10 +189,7 @@ public partial class AreaStatusOverviewViewModel : ObservableObject
     {
         if (Shell.Current != null)
         {
-            await Shell.Current.DisplayAlertAsync(
-                "Navigation Link",
-                $"Directing to nearest evacuation center:\n{NearestCenterName} ({NearestCenterDistance} away)\n\nRoute: //Prepare/EvacuationCenterInfo",
-                "OK");
+            await Shell.Current.GoToAsync("//Map");
         }
     }
 

@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-
+using System.Text.Json;
 using Android.Content;
 using Android.Util;
 
@@ -10,62 +9,36 @@ namespace RescuAR.App.Platforms.Android.Unity;
 
 public sealed class UnityService : IUnityService
 {
-    private const string UnityPackageName =
-        "com.rescuar.augmentedreality";
-
     public void LaunchUnity(EvacuationCenter center)
     {
         try
         {
             var activity = Microsoft.Maui.ApplicationModel.Platform.CurrentActivity;
-            
 
-            var packageManager =
-                activity?.PackageManager;
-
-            if (packageManager == null)
+            if (activity == null)
             {
-                Log.Error(
-                    "RESCUAR_UNITY",
-                    "PackageManager is unavailable.");
-
+                Log.Error("RESCUAR_UAAL", "CurrentActivity is null. Cannot launch Unity.");
                 return;
             }
 
-            var intent =
-                packageManager.GetLaunchIntentForPackage(
-                    UnityPackageName);
+            var intent = new Intent();
+            // UAAL approach: specify the package and the Unity player activity class
+            intent.SetClassName(
+                "com.rescuar.augmentedreality",
+                "com.unity3d.player.UnityPlayerGameActivity");
 
-            if (intent == null)
-            {
-                Log.Error(
-                    "RESCUAR_UNITY",
-                    $"Unity application '{UnityPackageName}' " +
-                    "is not installed.");
+            string json = JsonSerializer.Serialize(center);
 
-                return;
-            }
-
-            string json =
-                JsonSerializer.Serialize(center);
-
-            intent.PutExtra(
-                "evacuation_center",
-                json);
-
+            intent.PutExtra("evacuation_center", json);
             intent.AddFlags(ActivityFlags.SingleTop);
 
-            activity?.StartActivity(intent);
+            activity.StartActivity(intent);
 
-            Log.Debug(
-                "RESCUAR_UNITY",
-                "Unity application launched successfully.");
+            Log.Debug("RESCUAR_UAAL", "Unity application launched successfully.");
         }
         catch (Exception ex)
         {
-            Log.Error(
-                "RESCUAR_UNITY",
-                $"Failed to launch Unity application: {ex}");
+            Log.Error("RESCUAR_UAAL", $"Failed to launch Unity application: {ex}");
         }
     }
 }

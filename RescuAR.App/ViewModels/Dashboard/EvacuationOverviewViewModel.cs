@@ -25,7 +25,7 @@ public partial class EvacuationOverviewViewModel : ObservableObject
     public partial string ActionText { get; set; } = "Nearest Evacuation Center";
 
     [ObservableProperty]
-    public partial string ModuleRoute { get; set; } = "//Prepare/EvacuationCenterInfo";
+    public partial string ModuleRoute { get; set; } = "//Map";
 
     [ObservableProperty]
     public partial string ModuleName { get; set; } = "Evacuation Center Info";

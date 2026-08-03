@@ -53,7 +53,12 @@ public partial class PreparednessOverviewViewModel : ObservableObject
         {
             try
             {
-                await Shell.Current.GoToAsync(ModuleRoute);
+                string route = ModuleRoute;
+                if (route.StartsWith("//") && !route.Equals("//Camera") && !route.Equals("//Home"))
+                {
+                    route = route.Substring(2);
+                }
+                await Shell.Current.GoToAsync(route);
             }
             catch (Exception)
             {
