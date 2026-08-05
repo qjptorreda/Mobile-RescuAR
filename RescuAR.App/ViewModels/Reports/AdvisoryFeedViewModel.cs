@@ -140,7 +140,7 @@ public partial class AdvisoryFeedViewModel : ObservableObject
         IsPopupVisible = false;
         if (Shell.Current != null)
         {
-            await Shell.Current.GoToAsync("//Reports");
+            await Shell.Current.GoToAsync("AdvisoryFeedPage");
         }
     }
 
@@ -149,7 +149,16 @@ public partial class AdvisoryFeedViewModel : ObservableObject
     {
         if (Shell.Current != null)
         {
-            await Shell.Current.GoToAsync("//Prepare/EvacuationCenterInfo");
+            await Shell.Current.GoToAsync("Prepare/EvacuationCenterInfo");
+        }
+    }
+
+    [RelayCommand]
+    private async Task GoBackAsync()
+    {
+        if (Shell.Current != null)
+        {
+            await Shell.Current.GoToAsync("..");
         }
     }
 }
