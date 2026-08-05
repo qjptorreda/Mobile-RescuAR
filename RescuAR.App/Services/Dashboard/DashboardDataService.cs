@@ -63,7 +63,7 @@ public class CommunityReportsOverviewData
 public class PASSData
 {
     public string Title { get; set; } = "Preparation Assessment";
-    public int ScorePercentage { get; set; } = 72;
+    public int ScorePercentage { get; set; } = 100;
     public string Description { get; set; } = "Evaluate your overall preparedness for emergencies and evacuation.";
     public string ButtonText { get; set; } = "Take Assessment";
     public string ModuleRoute { get; set; } = "//Prepare/PASS";

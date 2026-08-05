@@ -22,22 +22,22 @@ public partial class PASSViewModel : ObservableObject
     public partial bool IsModalVisible { get; set; } = false;
 
     [ObservableProperty]
-    public partial int ScorePercentage { get; set; } = 72;
+    public partial int ScorePercentage { get; set; } = 100;
 
     [ObservableProperty]
-    public partial double ProgressValue { get; set; } = 0.72;
+    public partial double ProgressValue { get; set; } = 1.0;
 
     [ObservableProperty]
-    public partial string ScoreStatus { get; set; } = "Prepared";
+    public partial string ScoreStatus { get; set; } = "Highly Prepared";
 
     [ObservableProperty]
-    public partial string StatusColor { get; set; } = "#385723";
+    public partial string StatusColor { get; set; } = "#15803D";
 
     [ObservableProperty]
-    public partial string StatusBadgeBg { get; set; } = "#E2F0D9";
+    public partial string StatusBadgeBg { get; set; } = "#DCFCE7";
 
     [ObservableProperty]
-    public partial string LastAssessedText { get; set; } = "Last assessed June 15, 2026";
+    public partial string LastAssessedText { get; set; } = "Last assessed August 03, 2026";
 
     [ObservableProperty]
     public partial bool IsEmergencySuppliesExpanded { get; set; } = true;
@@ -61,9 +61,9 @@ public partial class PASSViewModel : ObservableObject
 
     public void RefreshScore()
     {
-        ScorePercentage = Preferences.Get("PASS_Score", 72);
+        ScorePercentage = Preferences.Get("PASS_Score", 100);
         ProgressValue = ScorePercentage / 100.0;
-        ScoreStatus = Preferences.Get("PASS_Status", "Prepared");
+        ScoreStatus = Preferences.Get("PASS_Status", "Highly Prepared");
         string date = Preferences.Get("PASS_LastDate", "June 15, 2026");
         LastAssessedText = $"Last assessed {date}";
 

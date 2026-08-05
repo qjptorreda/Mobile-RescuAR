@@ -15,6 +15,8 @@ public class EmergencyHotlineItem
     public string Number { get; set; } = string.Empty;
     public string Type { get; set; } = string.Empty;
     public string BadgeText { get; set; } = "EMS";
+    public string IconEmoji { get; set; } = "🚑";
+    public string IconBg { get; set; } = "#FEE2E2";
 }
 
 public partial class EvacuationCenterItem : ObservableObject
@@ -80,10 +82,42 @@ public partial class EvacuationCenterInfoViewModel : ObservableObject
     private void LoadData()
     {
         Hotlines.Clear();
-        Hotlines.Add(new EmergencyHotlineItem { Name = "Marikina Rescue 161", Number = "(02) 161", Type = "24/7 Emergency Medical & Rescue", BadgeText = "EMS" });
-        Hotlines.Add(new EmergencyHotlineItem { Name = "Marikina PNP Central", Number = "(02) 8405-0091", Type = "Police Emergency Hotline", BadgeText = "PNP" });
-        Hotlines.Add(new EmergencyHotlineItem { Name = "Marikina BFP Fire Dept", Number = "(02) 8646-0427", Type = "Fire & Rescue Brigade", BadgeText = "BFP" });
-        Hotlines.Add(new EmergencyHotlineItem { Name = "Red Cross Marikina", Number = "(02) 8681-3442", Type = "Disaster Relief & Blood Bank", BadgeText = "PRC" });
+        Hotlines.Add(new EmergencyHotlineItem 
+        { 
+            Name = "Marikina Rescue 161", 
+            Number = "(02) 161", 
+            Type = "24/7 Emergency Medical & Rescue", 
+            BadgeText = "EMS",
+            IconEmoji = "🚑",
+            IconBg = "#FEE2E2"
+        });
+        Hotlines.Add(new EmergencyHotlineItem 
+        { 
+            Name = "Marikina PNP Central", 
+            Number = "(02) 8405-0091", 
+            Type = "Police Emergency Hotline", 
+            BadgeText = "PNP",
+            IconEmoji = "🚓",
+            IconBg = "#DBEAFE"
+        });
+        Hotlines.Add(new EmergencyHotlineItem 
+        { 
+            Name = "Marikina BFP Fire Dept", 
+            Number = "(02) 8646-0427", 
+            Type = "Fire & Rescue Brigade", 
+            BadgeText = "BFP",
+            IconEmoji = "🚒",
+            IconBg = "#FFEDD5"
+        });
+        Hotlines.Add(new EmergencyHotlineItem 
+        { 
+            Name = "Red Cross Marikina", 
+            Number = "(02) 8681-3442", 
+            Type = "Disaster Relief & Blood Bank", 
+            BadgeText = "PRC",
+            IconEmoji = "🏥",
+            IconBg = "#FFE4E6"
+        });
 
         EvacuationCenters.Clear();
         EvacuationCenters.Add(new EvacuationCenterItem 

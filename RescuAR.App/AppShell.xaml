@@ -9,6 +9,7 @@
     xmlns:map="clr-namespace:RescuAR.App.Views.Map"
     xmlns:camera="clr-namespace:RescuAR.App.Views.Camera"
     xmlns:reports="clr-namespace:RescuAR.App.Views.Reports"
+    xmlns:prepare="clr-namespace:RescuAR.App.Views.Prepare"
     xmlns:profile="clr-namespace:RescuAR.App.Views.Profile">
 
     <TabBar>
