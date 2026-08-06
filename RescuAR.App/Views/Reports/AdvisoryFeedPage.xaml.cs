@@ -1,14 +1,13 @@
 using Microsoft.Maui.Controls;
 using RescuAR.App.ViewModels.Reports;
 
-namespace RescuAR.App.Views.Reports
+namespace RescuAR.App.Views.Reports;
+
+public partial class AdvisoryFeedPage : ContentPage
 {
-    public partial class AdvisoryFeedPage : ContentPage
+    public AdvisoryFeedPage()
     {
-        public AdvisoryFeedPage()
-        {
-            InitializeComponent();
-            BindingContext = new AdvisoryFeedViewModel();
-        }
+        InitializeComponent();
+        BindingContext = new AdvisoryFeedViewModel();
     }
 }
