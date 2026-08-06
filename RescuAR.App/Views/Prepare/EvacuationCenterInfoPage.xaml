@@ -35,8 +35,9 @@
                                         <Label Text="{Binding Type}" TextColor="#64748B" FontSize="11" />
                                     </VerticalStackLayout>
                                     
+                                    <!-- Direct Phone Call Button -->
                                     <Button Grid.Column="2" Text="Call" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="10" HeightRequest="38" FontSize="12" FontAttributes="Bold" Padding="14,0"
-                                            Command="{Binding BindingContext.DialNumberAsyncCommand, Source={x:Reference thisPage}}"
+                                            Command="{Binding BindingContext.MakePhoneCallCommand, Source={x:Reference thisPage}}"
                                             CommandParameter="{Binding Number}" />
                                 </Grid>
                             </Border>
@@ -45,7 +46,7 @@
                 </VerticalStackLayout>
             </VerticalStackLayout>
 
-            <!-- Section 2: Evacuation Centers Near You (Matching User's Reference Screenshot) -->
+            <!-- Section 2: Evacuation Centers Near Your Location -->
             <VerticalStackLayout Spacing="14">
                 <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
                     <Label Text="Evacuation Centers Near You" TextColor="#0F172A" FontSize="20" FontAttributes="Bold" VerticalOptions="Center" />
@@ -63,11 +64,11 @@
                                     <!-- Filter Chips Row & Bookmark Icon -->
                                     <Grid ColumnDefinitions="Auto,Auto,*,Auto" ColumnSpacing="8" VerticalOptions="Center">
                                         <Border Grid.Column="0" BackgroundColor="#E0F2FE" StrokeThickness="0" StrokeShape="RoundRectangle 8" Padding="12,6">
-                                            <Label Text="Nearest" TextColor="#0369A1" FontSize="12" FontAttributes="Bold" />
+                                            <Label Text="GPS Nearby" TextColor="#0369A1" FontSize="12" FontAttributes="Bold" />
                                         </Border>
                                         
                                         <Border Grid.Column="1" BackgroundColor="#FFFFFF" StrokeThickness="1" Stroke="#E2E8F0" StrokeShape="RoundRectangle 8" Padding="12,6">
-                                            <Label Text="Within 1 km" TextColor="#0F172A" FontSize="12" FontAttributes="Bold" />
+                                            <Label Text="{Binding Distance}" TextColor="#0F172A" FontSize="12" FontAttributes="Bold" />
                                         </Border>
 
                                         <!-- Bookmark Icon -->
@@ -76,14 +77,22 @@
                                         </Border>
                                     </Grid>
 
-                                    <!-- OpenStreetMap Real-Time Location Image Banner -->
-                                    <Border StrokeShape="RoundRectangle 14" StrokeThickness="0" HeightRequest="160">
+                                    <!-- Evacuation Facility Image Banner -->
+                                    <Border StrokeShape="RoundRectangle 14" StrokeThickness="0" HeightRequest="170">
                                         <Grid>
-                                            <Image Source="{Binding MapImageSource}" Aspect="AspectFill" HeightRequest="160" />
+                                            <Image Source="{Binding FacilityImageUrl}" Aspect="AspectFill" HeightRequest="170" />
                                             
+                                            <!-- Dark Overlay for Readability -->
+                                            <BoxView BackgroundColor="#20000000" VerticalOptions="Fill" HorizontalOptions="Fill" />
+
                                             <!-- Status Tag Overlay -->
                                             <Border BackgroundColor="{Binding StatusPillBg}" StrokeThickness="0" StrokeShape="RoundRectangle 8" Padding="10,4" HorizontalOptions="Start" VerticalOptions="Start" Margin="10">
                                                 <Label Text="{Binding StatusLabel}" TextColor="{Binding StatusPillText}" FontSize="11" FontAttributes="Bold" />
+                                            </Border>
+
+                                            <!-- Facility Photo Label Badge -->
+                                            <Border BackgroundColor="#CC0F172A" StrokeThickness="0" StrokeShape="RoundRectangle 6" Padding="8,3" HorizontalOptions="End" VerticalOptions="End" Margin="10">
+                                                <Label Text="📷 Facility View" TextColor="#FFFFFF" FontSize="10" FontAttributes="Bold" />
                                             </Border>
                                         </Grid>
                                     </Border>
@@ -106,34 +115,18 @@
                                         <Label Grid.Column="1" Text="{Binding VerifiedBy}" TextColor="#0F172A" FontSize="13" FontAttributes="Bold" HorizontalTextAlignment="End" VerticalOptions="Center" />
                                     </Grid>
 
-                                    <!-- Real-time Capacity Progress Bar -->
-                                    <VerticalStackLayout Spacing="6" BackgroundColor="#F8FAFC" Padding="12" RoundRectangle.CornerRadius="10">
-                                        <Grid ColumnDefinitions="*,Auto">
-                                            <Label Text="Real-Time Occupancy" TextColor="#64748B" FontSize="11" FontAttributes="Bold" />
-                                            <Label Grid.Column="1" Text="{Binding CapacityText}" TextColor="#0F172A" FontSize="11" FontAttributes="Bold" />
-                                        </Grid>
-                                        <ProgressBar Progress="{Binding ProgressValue}" ProgressColor="#0A8491" HeightRequest="8" />
-                                    </VerticalStackLayout>
-
                                     <!-- Action Links Row -->
-                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Margin="0,4,0,0">
-                                        
-                                        <!-- View More Details Link (Launches Interactive Map View) -->
-                                        <HorizontalStackLayout Grid.Column="0" Spacing="6" VerticalOptions="Center">
+                                    <Border StrokeThickness="1" Stroke="#E2E8F0" StrokeShape="RoundRectangle 12" BackgroundColor="#F8FAFC" Padding="12" Margin="0,4,0,0">
+                                        <HorizontalStackLayout Spacing="6" HorizontalOptions="Center" VerticalOptions="Center">
                                             <HorizontalStackLayout.GestureRecognizers>
                                                 <TapGestureRecognizer 
                                                     Command="{Binding BindingContext.ViewMoreDetailsCommand, Source={x:Reference thisPage}}"
                                                     CommandParameter="{Binding .}" />
                                             </HorizontalStackLayout.GestureRecognizers>
-                                            <Label Text="View more details" TextColor="#0A8491" FontSize="14" FontAttributes="Bold" VerticalOptions="Center" />
+                                            <Label Text="View details &amp; route on Interactive Map" TextColor="#0A8491" FontSize="13" FontAttributes="Bold" VerticalOptions="Center" />
                                             <Path Data="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" Fill="#0A8491" WidthRequest="14" HeightRequest="14" Aspect="Uniform" VerticalOptions="Center" />
                                         </HorizontalStackLayout>
-
-                                        <!-- Live Check-In Button -->
-                                        <Button Grid.Column="1" Text="Live Check-In" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="10" HeightRequest="38" FontSize="12" FontAttributes="Bold" Padding="14,0"
-                                                Command="{Binding BindingContext.CheckInEvacueeCommand, Source={x:Reference thisPage}}"
-                                                CommandParameter="{Binding .}" />
-                                    </Grid>
+                                    </Border>
 
                                 </VerticalStackLayout>
                             </Border>
