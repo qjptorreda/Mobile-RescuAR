@@ -32,20 +32,34 @@ namespace RescuAR.App.ViewModels.Reports
 
         partial void OnReportIdChanged(string value)
         {
-            LoadReport(value);
+            _ = LoadReportAsync(value);
         }
 
-        public void LoadReport(string id)
+        public async Task LoadReportAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id)) return;
-            foreach (var r in _reportService.Reports)
+
+            var match = _reportService.Reports.FirstOrDefault(r => r.Id == id);
+            if (match != null)
             {
-                if (r.Id == id)
+                Report = match;
+                UpdateNoCommentsState();
+                return;
+            }
+
+            try
+            {
+                var liveReports = await _reportService.GetReportsAsync();
+                match = liveReports.FirstOrDefault(r => r.Id == id);
+                if (match != null)
                 {
-                    Report = r;
+                    Report = match;
                     UpdateNoCommentsState();
-                    break;
                 }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error loading report details: {ex.Message}");
             }
         }
 
