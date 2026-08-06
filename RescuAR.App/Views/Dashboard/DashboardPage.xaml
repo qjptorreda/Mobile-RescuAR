@@ -10,8 +10,9 @@
     BackgroundColor="#F2F2F7"
     Shell.NavBarIsVisible="False">
 
-    <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding="16">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Spacing="20" Padding="16">
             <!-- App Header -->
             <VerticalStackLayout Spacing="2" Margin="0,10,0,4">
                 <Label Text="Home"
@@ -90,5 +91,8 @@
             <!-- Preparation Assessment Card -->
             <dashboard:PASSOverviewPage />
         </VerticalStackLayout>
-    </ScrollView>
+        </ScrollView>
+        <!-- Subtle shadow/line for TabBar -->
+        <BoxView VerticalOptions="End" HeightRequest="1" BackgroundColor="#D1D1D6" />
+    </Grid>
 </ContentPage>

@@ -5,6 +5,7 @@
     xmlns:vm="clr-namespace:RescuAR.App.ViewModels.Authentication"
     x:DataType="vm:OnboardingViewModel"
     x:Class="RescuAR.App.Views.Authentication.OnboardingPage"
+    NavigationPage.HasNavigationBar="False"
     BackgroundColor="#F7F7F7">
 
     <Grid RowDefinitions="Auto, *, Auto" ColumnDefinitions="*">

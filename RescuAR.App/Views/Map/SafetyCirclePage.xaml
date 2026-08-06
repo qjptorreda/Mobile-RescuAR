@@ -1,11 +1,63 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mapsui="clr-namespace:Mapsui.UI.Maui;assembly=Mapsui.UI.Maui"
+             xmlns:viewmodels="clr-namespace:RescuAR.App.ViewModels.Map"
+             x:Class="RescuAR.App.Views.Map.SafetyCirclePage"
+             Title="Safety Circles">
 
-<ContentPage
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <Grid>
+        <!-- The Map dynamically binds to the ViewModel -->
+        <mapsui:MapView x:Name="mapView" 
+                        Map="{Binding Map}"
+                        VerticalOptions="Fill" 
+                        HorizontalOptions="Fill" />
 
-    <VerticalStackLayout>
-        <Label Text="Placeholder" />
-    </VerticalStackLayout>
+        <!-- Overlay Floating Card UI -->
+        <Border VerticalOptions="End" 
+                Margin="15,15,15,30" 
+                Padding="15" 
+                BackgroundColor="White"
+                Stroke="Transparent"
+                StrokeThickness="0">
 
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="15" />
+            </Border.StrokeShape>
+
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,5" Radius="10" Opacity="0.15" />
+            </Border.Shadow>
+
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Track &amp; Route Safety Circle" 
+                       FontAttributes="Bold" 
+                       FontSize="16" 
+                       TextColor="Black"/>
+
+                <!-- Circle Member Selection -->
+                <Picker Title="Select Circle Member..." 
+                        ItemsSource="{Binding CircleMembers}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding SelectedMember}"
+                        TextColor="Black"
+                        TitleColor="Gray"/>
+
+                <!-- Evacuation Center Selection -->
+                <Picker Title="Select Evacuation Center..." 
+                        ItemsSource="{Binding EvacuationCenters}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding SelectedCenter}"
+                        TextColor="Black"
+                        TitleColor="Gray"/>
+
+                <!-- Bound to the RelayCommand in the ViewModel -->
+                <Button Text="Show Route for Member" 
+                        Command="{Binding ShowRouteCommand}"
+                        BackgroundColor="#512BD4" 
+                        TextColor="White" 
+                        CornerRadius="8" />
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
 </ContentPage>

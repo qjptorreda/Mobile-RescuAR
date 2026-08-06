@@ -10,5 +10,15 @@ namespace RescuAR.App.Views.Map
             InitializeComponent();
             BindingContext = new MapViewModel();
         }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            
+            if (BindingContext is ViewModels.Map.MapViewModel vm)
+            {
+                await vm.InitializeMapAsync(MapControl);
+            }
+        }
     }
 }

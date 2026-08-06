@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:RescuAR.App.ViewModels.Map"
+    xmlns:mapsui="clr-namespace:Mapsui.UI.Maui;assembly=Mapsui.UI.Maui"
     x:Class="RescuAR.App.Views.Map.MapPage"
     x:DataType="vm:MapViewModel"
     Shell.NavBarIsVisible="False"
@@ -29,15 +30,42 @@
                 <!-- Active Indicator -->
                 <HorizontalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="6">
                     <Ellipse WidthRequest="8" HeightRequest="8" Fill="#22C55E" />
-                    <Label Text="OSM LIVE" TextColor="#FFFFFF" FontSize="11" FontAttributes="Bold" VerticalOptions="Center" />
+                    <Label Text="OFFLINE READY" TextColor="#FFFFFF" FontSize="11" FontAttributes="Bold" VerticalOptions="Center" />
                 </HorizontalStackLayout>
             </Grid>
         </Border>
 
-        <!-- OSM Leaflet Web Map -->
-        <WebView Grid.Row="1" 
-                 Source="{Binding MapHtmlSource}" 
-                 HorizontalOptions="FillAndExpand" 
-                 VerticalOptions="FillAndExpand" />
+        <!-- Mapsui Native Map -->
+        <mapsui:MapControl x:Name="MapControl" Grid.Row="1" 
+                           HorizontalOptions="FillAndExpand" 
+                           VerticalOptions="FillAndExpand" />
+
+        <!-- Floating Chat Button for Safety Circle -->
+        <Border Grid.Row="1"
+                BackgroundColor="#0F8068"
+                StrokeThickness="0"
+                WidthRequest="56"
+                HeightRequest="56"
+                Margin="16"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Shadow="{Shadow Brush=Black, Offset='0,4', Radius=4, Opacity=0.3}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="28" />
+            </Border.StrokeShape>
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding OpenChatCommand}" />
+            </Border.GestureRecognizers>
+            <Path Data="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" 
+                  Fill="White" 
+                  Aspect="Uniform" 
+                  WidthRequest="24" 
+                  HeightRequest="24" 
+                  HorizontalOptions="Center" 
+                  VerticalOptions="Center" />
+        </Border>
+                 
+        <!-- Subtle shadow/line for TabBar -->
+        <BoxView Grid.RowSpan="2" VerticalOptions="End" HeightRequest="1" BackgroundColor="#D1D1D6" />
     </Grid>
 </ContentPage>

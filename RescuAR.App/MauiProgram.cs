@@ -1,5 +1,9 @@
 using Microsoft.Extensions.Logging;
 using RescuAR.App.Services.Unity;
+using RescuAR.App.Views.Authentication;
+using RescuAR.App.ViewModels.Authentication;
+using RescuAR.App.Services.Authentication;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 #if ANDROID
 using RescuAR.App.Platforms.Android.Unity;
@@ -14,6 +18,7 @@ namespace RescuAR.App
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseSkiaSharp()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -23,6 +28,9 @@ namespace RescuAR.App
             // Register Services
             builder.Services.AddSingleton<AuthenticationService>();
 
+            // Initialize SQLite for Android (Required for reading .mbtiles)
+            SQLitePCL.Batteries_V2.Init();
+
             // Register Views and ViewModels
             builder.Services.AddTransient<SplashPage>();
             builder.Services.AddTransient<SplashViewModel>();
@@ -31,11 +39,26 @@ namespace RescuAR.App
             builder.Services.AddTransient<RegistrationPage>();
             builder.Services.AddTransient<RegistrationViewModel>();
             builder.Services.AddTransient<RegistrationSuccessPage>();
+            
+            // New OTP & Address Flow
+            builder.Services.AddTransient<RescuAR.App.ViewModels.Authentication.OtpVerificationViewModel>();
+            builder.Services.AddTransient<RescuAR.App.Views.Authentication.OtpVerificationPage>();
+            builder.Services.AddTransient<RescuAR.App.ViewModels.Authentication.AddressInputViewModel>();
+            builder.Services.AddTransient<RescuAR.App.Views.Authentication.AddressInputPage>();
             builder.Services.AddTransient<RegistrationSuccessViewModel>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<GoogleAuthPage>();
             builder.Services.AddTransient<GoogleAuthViewModel>();
+            builder.Services.AddTransient<TermsAndConditionsPage>();
+            builder.Services.AddTransient<PrivacyPolicyPage>();
+
+            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoUnderline", (h, v) =>
+            {
+#if ANDROID
+                h.PlatformView.BackgroundTintList = global::Android.Content.Res.ColorStateList.ValueOf(global::Android.Graphics.Color.Transparent);
+#endif
+            });
 
 #if ANDROID
             
@@ -69,14 +92,14 @@ namespace RescuAR.App
 #if ANDROID
 public class MyWebChromeClient : global::Android.Webkit.WebChromeClient
 {
-    public override void OnPermissionRequest(global::Android.Webkit.PermissionRequest request)
+    public override void OnPermissionRequest(global::Android.Webkit.PermissionRequest? request)
     {
-        request.Grant(request.GetResources());
+        request?.Grant(request.GetResources());
     }
 
-    public override void OnGeolocationPermissionsShowPrompt(string origin, global::Android.Webkit.GeolocationPermissions.ICallback callback)
+    public override void OnGeolocationPermissionsShowPrompt(string? origin, global::Android.Webkit.GeolocationPermissions.ICallback? callback)
     {
-        callback.Invoke(origin, true, false);
+        callback?.Invoke(origin, true, false);
     }
 }
 #endif

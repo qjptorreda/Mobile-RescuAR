@@ -4,19 +4,10 @@ namespace RescuAR.App;
 
 public partial class App : Application
 {
-    public App(OnboardingPage onboardingPage)
+    public App(SplashPage splashPage, LoginPage loginPage)
     {
         InitializeComponent();
-
-        bool isLoggedIn = Preferences.Default.Get("IsLoggedIn", false);
-        if (isLoggedIn)
-        {
-            MainPage = new AppShell();
-        }
-        else
-        {
-            MainPage = onboardingPage;
-        }
+        MainPage = splashPage;
     }
 
     protected override Window CreateWindow(IActivationState? activationState)

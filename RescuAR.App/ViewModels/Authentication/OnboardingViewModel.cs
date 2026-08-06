@@ -131,11 +131,11 @@ namespace RescuAR.App.ViewModels.Authentication
         private void NavigateToSplash()
         {
             var splashPage = _serviceProvider.GetRequiredService<SplashPage>();
-            MainThread.BeginInvokeOnMainThread(() =>
+            MainThread.BeginInvokeOnMainThread(async () =>
             {
-                if (Application.Current != null)
+                if (Application.Current?.MainPage is NavigationPage navPage)
                 {
-                    Application.Current.MainPage = splashPage;
+                    await navPage.PushAsync(splashPage);
                 }
             });
         }
@@ -144,11 +144,11 @@ namespace RescuAR.App.ViewModels.Authentication
         private void CreateAccount()
         {
             var registrationPage = _serviceProvider.GetRequiredService<RegistrationPage>();
-            MainThread.BeginInvokeOnMainThread(() =>
+            MainThread.BeginInvokeOnMainThread(async () =>
             {
-                if (Application.Current != null)
+                if (Application.Current?.MainPage is NavigationPage navPage)
                 {
-                    Application.Current.MainPage = registrationPage;
+                    await navPage.PushAsync(registrationPage);
                 }
             });
         }
@@ -157,11 +157,11 @@ namespace RescuAR.App.ViewModels.Authentication
         private void SignIn()
         {
             var loginPage = _serviceProvider.GetRequiredService<LoginPage>();
-            MainThread.BeginInvokeOnMainThread(() =>
+            MainThread.BeginInvokeOnMainThread(async () =>
             {
-                if (Application.Current != null)
+                if (Application.Current?.MainPage is NavigationPage navPage)
                 {
-                    Application.Current.MainPage = loginPage;
+                    await navPage.PushAsync(loginPage);
                 }
             });
         }

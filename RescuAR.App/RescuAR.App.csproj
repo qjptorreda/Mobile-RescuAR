@@ -68,10 +68,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="BruTile.MbTiles" Version="5.0.6" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+		<PackageReference Include="Mapsui.Nts" Version="4.1.8" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+		<PackageReference Include="NetTopologySuite.IO.GeoJSON" Version="4.0.0" />
 		<PackageReference Include="Supabase" Version="1.1.1" />
+		<!-- Restored Map and Local Database Packages -->
+		<PackageReference Include="Mapsui.Maui" Version="4.1.8" />
+		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.9-preview.2.2" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -6,8 +6,9 @@
     Title="Reports"
     BackgroundColor="#F2F2F7">
 
-    <Grid VerticalOptions="Center" HorizontalOptions="Center" Padding="20">
-        <VerticalStackLayout Spacing="16" HorizontalOptions="Center" VerticalOptions="Center">
+    <Grid>
+        <Grid VerticalOptions="Center" HorizontalOptions="Center" Padding="20">
+            <VerticalStackLayout Spacing="16" HorizontalOptions="Center" VerticalOptions="Center">
             <!-- Reports/Clipboard Icon -->
             <Border StrokeShape="RoundRectangle 40"
                     StrokeThickness="0"
@@ -38,5 +39,8 @@
                    HorizontalOptions="Center"
                    WidthRequest="300" />
         </VerticalStackLayout>
+        </Grid>
+        <!-- Subtle shadow/line for TabBar -->
+        <BoxView VerticalOptions="End" HeightRequest="1" BackgroundColor="#D1D1D6" />
     </Grid>
 </ContentPage>

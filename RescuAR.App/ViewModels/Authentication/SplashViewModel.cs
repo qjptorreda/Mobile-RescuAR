@@ -25,14 +25,27 @@ namespace RescuAR.App.ViewModels.Authentication
             // Simulate loading safety resources
             await Task.Delay(2500);
 
-            // Navigate to RegistrationPage
-            var registrationPage = _serviceProvider.GetRequiredService<RegistrationPage>();
+            bool isLoggedIn = Preferences.Default.Get("IsLoggedIn", false);
+            bool hasSignedUp = Preferences.Default.Get("HasSignedUp", false);
             
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 if (Application.Current != null)
                 {
-                    Application.Current.MainPage = registrationPage;
+                    if (isLoggedIn)
+                    {
+                        Application.Current.MainPage = new AppShell();
+                    }
+                    else if (hasSignedUp)
+                    {
+                        var loginPage = _serviceProvider.GetRequiredService<LoginPage>();
+                        Application.Current.MainPage = new NavigationPage(loginPage);
+                    }
+                    else
+                    {
+                        var onboardingPage = _serviceProvider.GetRequiredService<OnboardingPage>();
+                        Application.Current.MainPage = new NavigationPage(onboardingPage);
+                    }
                 }
             });
         }
