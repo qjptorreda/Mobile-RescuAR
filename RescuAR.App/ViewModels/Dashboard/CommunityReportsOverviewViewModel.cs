@@ -27,7 +27,7 @@ public partial class CommunityReportsOverviewViewModel : ObservableObject
     public partial string ActionText { get; set; } = string.Empty;
 
     [ObservableProperty]
-    public partial string ModuleRoute { get; set; } = "//Reports/CommunityPosting";
+    public partial string ModuleRoute { get; set; } = "//Reports";
 
     [ObservableProperty]
     public partial string ModuleName { get; set; } = string.Empty;
@@ -64,14 +64,25 @@ public partial class CommunityReportsOverviewViewModel : ObservableObject
         {
             try
             {
-                await Shell.Current.GoToAsync(ModuleRoute);
+                foreach (var item in Shell.Current.Items)
+                {
+                    foreach (var section in item.Items)
+                    {
+                        foreach (var content in section.Items)
+                        {
+                            if (content.Route == "Reports" || content.Title == "Reports")
+                            {
+                                Shell.Current.CurrentItem = content;
+                                return;
+                            }
+                        }
+                    }
+                }
+                await Shell.Current.GoToAsync("//Reports");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                await Shell.Current.DisplayAlertAsync(
-                    "Link Redirection",
-                    $"Redirecting to link reference:\n{ModuleRoute}\n\nTarget Module: {ModuleName}",
-                    "OK");
+                System.Diagnostics.Debug.WriteLine($"Navigation error: {ex.Message}");
             }
         }
     }
