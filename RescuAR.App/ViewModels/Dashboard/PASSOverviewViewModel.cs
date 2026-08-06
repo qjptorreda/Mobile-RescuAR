@@ -15,7 +15,7 @@ public partial class PASSOverviewViewModel : ObservableObject
     public partial string Title { get; set; } = string.Empty;
 
     [ObservableProperty]
-    public partial string ScoreText { get; set; } = string.Empty;
+    public partial int ScorePercentage { get; set; }
 
     [ObservableProperty]
     public partial string Description { get; set; } = string.Empty;
@@ -24,7 +24,7 @@ public partial class PASSOverviewViewModel : ObservableObject
     public partial string ButtonText { get; set; } = string.Empty;
 
     [ObservableProperty]
-    public partial string ModuleRoute { get; set; } = "//Prepare/PASS";
+    public partial string ModuleRoute { get; set; } = "Prepare/PASS";
 
     [ObservableProperty]
     public partial string ModuleName { get; set; } = string.Empty;
@@ -43,10 +43,10 @@ public partial class PASSOverviewViewModel : ObservableObject
     {
         var data = await _dataService.GetPASSDataAsync();
         Title = data.Title;
-        ScoreText = $"{data.ScorePercentage}% prepared";
+        ScorePercentage = data.ScorePercentage;
         Description = data.Description;
         ButtonText = data.ButtonText;
-        ModuleRoute = data.ModuleRoute;
+        ModuleRoute = "Prepare/PASS";
         ModuleName = data.ModuleName;
     }
 
@@ -57,19 +57,16 @@ public partial class PASSOverviewViewModel : ObservableObject
         {
             try
             {
-                string route = ModuleRoute;
-                if (route.StartsWith("//") && !route.Equals("//Camera") && !route.Equals("//Home"))
+                if (Shell.Current.Navigation != null)
                 {
-                    route = route.Substring(2);
+                    await Shell.Current.Navigation.PushAsync(new Views.Prepare.PASSPage());
+                    return;
                 }
-                await Shell.Current.GoToAsync(route);
+                await Shell.Current.GoToAsync("Prepare/PASS");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                await Shell.Current.DisplayAlertAsync(
-                    "Link Redirection",
-                    $"Redirecting to link reference:\n{ModuleRoute}\n\nTarget Module: {ModuleName}",
-                    "OK");
+                System.Diagnostics.Debug.WriteLine($"Navigation error: {ex.Message}");
             }
         }
     }
