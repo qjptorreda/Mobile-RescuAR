@@ -244,56 +244,53 @@ namespace RescuAR.App.ViewModels.Reports
             }
         }
 
+        private FileResult? _selectedMediaFile;
+
         [RelayCommand]
         private async Task PickMediaAsync()
         {
             try
             {
-                var action = await Shell.Current.DisplayActionSheetAsync("Upload Media", "Cancel", null, "Take Photo", "Choose Photo from Gallery", "Pick Video");
+                var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
+                if (status != PermissionStatus.Granted)
+                {
+                    status = await Permissions.RequestAsync<Permissions.Camera>();
+                }
 
-                if (action == "Take Photo")
+                if (status == PermissionStatus.Granted)
                 {
                     if (MediaPicker.Default.IsCaptureSupported)
                     {
                         var photo = await MediaPicker.Default.CapturePhotoAsync();
                         if (photo != null)
                         {
+                            _selectedMediaFile = photo;
                             NewReportMediaUrl = photo.FullPath;
                             NewReportMediaType = "Image";
                             NewReportHasMedia = true;
                         }
                     }
-                }
-                else if (action == "Choose Photo from Gallery")
-                {
-                    var photo = await MediaPicker.Default.PickPhotoAsync();
-                    if (photo != null)
+                    else
                     {
-                        NewReportMediaUrl = photo.FullPath;
-                        NewReportMediaType = "Image";
-                        NewReportHasMedia = true;
+                        await Shell.Current.DisplayAlertAsync("Camera Unavailable", "Camera capture is not supported on this device.", "OK");
                     }
                 }
-                else if (action == "Pick Video")
+                else
                 {
-                    var video = await MediaPicker.Default.PickVideoAsync();
-                    if (video != null)
-                    {
-                        NewReportMediaUrl = video.FullPath;
-                        NewReportMediaType = "Video";
-                        NewReportHasMedia = true;
-                    }
+                    await Shell.Current.DisplayAlertAsync("Permission Denied", "Camera permission is required to take photos.", "OK");
                 }
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Media pick error: {ex.Message}");
+                await Shell.Current.DisplayAlertAsync("Camera Error", ex.Message, "OK");
             }
         }
 
         [RelayCommand]
         private void RemoveMedia()
         {
+            _selectedMediaFile = null;
             NewReportMediaUrl = string.Empty;
             NewReportHasMedia = false;
         }
@@ -359,6 +356,34 @@ namespace RescuAR.App.ViewModels.Reports
                 return;
             }
 
+            string publicMediaUrl = string.Empty;
+
+            if (_selectedMediaFile != null)
+            {
+                try
+                {
+                    using var stream = await _selectedMediaFile.OpenReadAsync();
+                    var uploadedUrl = await RescuAR.App.Services.Cloud.CloudinaryService.UploadImageStreamAsync(stream, _selectedMediaFile.FileName);
+                    if (!string.IsNullOrWhiteSpace(uploadedUrl))
+                    {
+                        publicMediaUrl = uploadedUrl;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Stream upload error: {ex.Message}");
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(publicMediaUrl) && !string.IsNullOrWhiteSpace(NewReportMediaUrl))
+            {
+                var uploadedUrl = await RescuAR.App.Services.Cloud.CloudinaryService.UploadImageAsync(NewReportMediaUrl);
+                if (!string.IsNullOrWhiteSpace(uploadedUrl))
+                {
+                    publicMediaUrl = uploadedUrl;
+                }
+            }
+
             var report = new CommunityReport
             {
                 Title = NewReportTitle.Trim(),
@@ -369,11 +394,12 @@ namespace RescuAR.App.ViewModels.Reports
                 Longitude = NewReportLongitude,
                 DistanceText = "50 meters away",
                 PostedBy = "Aubrey T.",
-                PostedAt = DateTime.Now,
-                MediaUrl = NewReportMediaUrl,
+                CreatedAt = DateTime.UtcNow,
+                MediaUrl = publicMediaUrl,
                 MediaType = NewReportMediaType,
-                HasMedia = NewReportHasMedia,
-                AllowComments = NewReportAllowComments
+                HasMedia = !string.IsNullOrWhiteSpace(publicMediaUrl),
+                AllowComments = NewReportAllowComments,
+                Status = "Pending"
             };
 
             await _reportService.AddReportAsync(report);
@@ -406,7 +432,26 @@ namespace RescuAR.App.ViewModels.Reports
         private async Task ToggleLikeAsync(CommunityReport report)
         {
             if (report == null) return;
+
+            if (report.IsLikedByCurrentUser)
+            {
+                report.IsLikedByCurrentUser = false;
+                report.LikeCount = Math.Max(0, report.LikeCount - 1);
+            }
+            else
+            {
+                report.IsLikedByCurrentUser = true;
+                report.LikeCount++;
+            }
+
             await _reportService.ToggleLikeAsync(report.Id);
+
+            var index = Reports.IndexOf(report);
+            if (index >= 0)
+            {
+                Reports[index] = null!;
+                Reports[index] = report;
+            }
         }
     }
 }
