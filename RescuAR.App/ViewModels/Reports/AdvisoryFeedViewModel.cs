@@ -9,142 +9,156 @@ using Microsoft.Maui.Controls;
 using RescuAR.App.Models;
 using RescuAR.App.Services.Reports;
 
-namespace RescuAR.App.ViewModels.Reports
+namespace RescuAR.App.ViewModels.Reports;
+
+public partial class AdvisoryFeedViewModel : ObservableObject
 {
-    public partial class CategoryChipItem : ObservableObject
+    private readonly AdvisoryService _advisoryService;
+    private List<DisasterAdvisory> _allAdvisories = new();
+
+    public ObservableCollection<DisasterAdvisory> Advisories { get; } = new();
+
+    [ObservableProperty]
+    public partial bool IsRefreshing { get; set; }
+
+    [ObservableProperty]
+    public partial string SelectedFilter { get; set; } = "All";
+
+    [ObservableProperty]
+    public partial string LatestWaterLevelText { get; set; } = "16.5 m";
+
+    [ObservableProperty]
+    public partial string CurrentAlertStatus { get; set; } = "Level 2 — Warning";
+
+    [ObservableProperty]
+    public partial string CurrentDateTimeText { get; set; } = DateTime.Now.ToString("dddd, MMMM d, yyyy • h:mm:ss tt");
+
+    [ObservableProperty]
+    public partial DisasterAdvisory? SelectedAdvisory { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsPopupVisible { get; set; }
+
+    public AdvisoryFeedViewModel()
     {
-        [ObservableProperty]
-        private string name = string.Empty;
+        _advisoryService = new AdvisoryService();
+        _ = LoadAdvisoriesAsync();
+        StartClockTicker();
 
-        [ObservableProperty]
-        private bool isSelected;
-
-        public string BgColor => IsSelected ? "#0A8491" : "#FFFFFF";
-        public string TextColor => IsSelected ? "#FFFFFF" : "#000000";
-        public string BorderColor => IsSelected ? "#0A8491" : "#E5E5EA";
-
-        partial void OnIsSelectedChanged(bool value)
+        // Real-time listener for new admin advisories
+        RealtimeAdvisoryManager.OnNewAdvisoryPushed += (newAdvisory) =>
         {
-            OnPropertyChanged(nameof(BgColor));
-            OnPropertyChanged(nameof(TextColor));
-            OnPropertyChanged(nameof(BorderColor));
+            SelectedAdvisory = newAdvisory;
+            IsPopupVisible = true;
+            _ = LoadAdvisoriesAsync();
+        };
+
+        RealtimeAdvisoryManager.StartRealtimeListener();
+    }
+
+    private void StartClockTicker()
+    {
+        var timer = Application.Current?.Dispatcher.CreateTimer();
+        if (timer != null)
+        {
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += (s, e) =>
+            {
+                CurrentDateTimeText = DateTime.Now.ToString("dddd, MMMM d, yyyy • h:mm:ss tt");
+            };
+            timer.Start();
         }
     }
 
-    public partial class AdvisoryFeedViewModel : ObservableObject
+    [RelayCommand]
+    public async Task RefreshAdvisoriesAsync()
     {
-        private readonly AdvisoryService _advisoryService;
+        IsRefreshing = true;
+        await LoadAdvisoriesAsync();
+        IsRefreshing = false;
+    }
 
-        [ObservableProperty]
-        private string selectedCategory = "All";
+    private async Task LoadAdvisoriesAsync()
+    {
+        _allAdvisories = await _advisoryService.GetAdvisoriesAsync();
 
-        [ObservableProperty]
-        private string selectedStatus = "All";
-
-        [ObservableProperty]
-        private string lastUpdatedText = "Last updated just now";
-
-        public ObservableCollection<CategoryChipItem> CategoryChips { get; } = new();
-        public ObservableCollection<CategoryChipItem> StatusChips { get; } = new();
-        public ObservableCollection<DisasterAdvisory> DisplayedAdvisories { get; } = new();
-
-        public AdvisoryFeedViewModel() : this(new AdvisoryService())
+        if (_allAdvisories.Count > 0)
         {
-        }
-
-        public AdvisoryFeedViewModel(AdvisoryService advisoryService)
-        {
-            _advisoryService = advisoryService;
-
-            InitializeFilterChips();
-            _ = LoadAdvisoriesAsync();
-        }
-
-        private void InitializeFilterChips()
-        {
-            CategoryChips.Clear();
-            var categories = new[] { "All", "Earthquake", "Typhoon", "Flood", "Advisory" };
-            foreach (var cat in categories)
+            var top = _allAdvisories.FirstOrDefault();
+            if (top != null)
             {
-                CategoryChips.Add(new CategoryChipItem { Name = cat, IsSelected = cat == "All" });
-            }
-
-            StatusChips.Clear();
-            var statuses = new[] { "All", "Active", "Cleared" };
-            foreach (var stat in statuses)
-            {
-                StatusChips.Add(new CategoryChipItem { Name = stat, IsSelected = stat == "All" });
+                LatestWaterLevelText = $"{top.WaterLevel:F1} m";
+                CurrentAlertStatus = $"{top.DisplayAlertLevel} Alert";
             }
         }
 
-        [RelayCommand]
-        public async Task LoadAdvisoriesAsync()
+        ApplyFilter();
+    }
+
+    [RelayCommand]
+    private void SelectFilter(string filter)
+    {
+        SelectedFilter = filter;
+        ApplyFilter();
+    }
+
+    private void ApplyFilter()
+    {
+        Advisories.Clear();
+        var filtered = SelectedFilter switch
         {
-            var items = await _advisoryService.GetAdvisoriesAsync(SelectedCategory, SelectedStatus);
-            DisplayedAdvisories.Clear();
-            foreach (var item in items)
-            {
-                DisplayedAdvisories.Add(item);
-            }
+            "Critical" => _allAdvisories.Where(x => x.DisplayAlertLevel.Equals("Critical", StringComparison.OrdinalIgnoreCase) || x.DisplayAlertLevel.Equals("Warning", StringComparison.OrdinalIgnoreCase) || x.DisplayAlertLevel.Equals("High", StringComparison.OrdinalIgnoreCase)),
+            "Standby" => _allAdvisories.Where(x => x.DisplayAlertLevel.Equals("Standby", StringComparison.OrdinalIgnoreCase) || x.DisplayAlertLevel.Equals("Low", StringComparison.OrdinalIgnoreCase)),
+            _ => _allAdvisories
+        };
+
+        foreach (var item in filtered)
+        {
+            Advisories.Add(item);
         }
+    }
 
-        [RelayCommand]
-        private async Task SelectCategoryAsync(string categoryName)
+    [RelayCommand]
+    private void ShowAdvisoryDetail(DisasterAdvisory advisory)
+    {
+        if (advisory != null)
         {
-            if (string.IsNullOrWhiteSpace(categoryName)) return;
-
-            SelectedCategory = categoryName;
-            foreach (var chip in CategoryChips)
-            {
-                chip.IsSelected = chip.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase);
-            }
-            await LoadAdvisoriesAsync();
+            SelectedAdvisory = advisory;
+            IsPopupVisible = true;
         }
+    }
 
-        [RelayCommand]
-        private async Task SelectStatusAsync(string statusName)
+    [RelayCommand]
+    private void ClosePopup()
+    {
+        IsPopupVisible = false;
+    }
+
+    [RelayCommand]
+    private async Task GoToAdvisoriesFeedAsync()
+    {
+        IsPopupVisible = false;
+        if (Shell.Current != null)
         {
-            if (string.IsNullOrWhiteSpace(statusName)) return;
-
-            SelectedStatus = statusName;
-            foreach (var chip in StatusChips)
-            {
-                chip.IsSelected = chip.Name.Equals(statusName, StringComparison.OrdinalIgnoreCase);
-            }
-            await LoadAdvisoriesAsync();
+            await Shell.Current.GoToAsync("AdvisoryFeedPage");
         }
+    }
 
-        [RelayCommand]
-        private async Task GoBackAsync()
+    [RelayCommand]
+    private async Task NavigateToEvacuationCentersAsync()
+    {
+        if (Shell.Current != null)
         {
-            if (Shell.Current != null)
-            {
-                await Shell.Current.GoToAsync("..");
-            }
+            await Shell.Current.GoToAsync("Prepare/EvacuationCenterInfo");
         }
+    }
 
-        [RelayCommand]
-        private async Task ViewDetailsAsync(DisasterAdvisory advisory)
+    [RelayCommand]
+    private async Task GoBackAsync()
+    {
+        if (Shell.Current != null)
         {
-            if (advisory == null || Shell.Current == null) return;
-
-            string desc = advisory.HasDescription ? $"\n\n{advisory.Description}" : string.Empty;
-            await Shell.Current.DisplayAlertAsync(
-                advisory.Title,
-                $"Affected Area: {advisory.AffectedArea}\nIssued by: {advisory.IssuedBy}\nIssued at: {advisory.FormattedIssuedAt}\nStatus: {advisory.Status}{desc}",
-                "OK");
-        }
-
-        [RelayCommand]
-        private async Task OpenNotificationsAsync()
-        {
-            if (Shell.Current != null)
-            {
-                await Shell.Current.DisplayAlertAsync(
-                    "Advisory Notifications",
-                    "Push notifications for real-time disaster advisories are ACTIVE.",
-                    "OK");
-            }
+            await Shell.Current.GoToAsync("..");
         }
     }
 }
