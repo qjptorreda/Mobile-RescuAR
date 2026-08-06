@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -11,23 +12,13 @@ public partial class SafetyCircleOverviewViewModel : ObservableObject
 {
     private readonly IDashboardDataService _dataService;
 
-    [ObservableProperty]
-    public partial string Circle1Name { get; set; } = string.Empty;
-
-    [ObservableProperty]
-    public partial string Circle1Status { get; set; } = string.Empty;
-
-    [ObservableProperty]
-    public partial string Circle2Name { get; set; } = string.Empty;
-
-    [ObservableProperty]
-    public partial string Circle2Status { get; set; } = string.Empty;
+    public ObservableCollection<SafetyCircleGroupItem> Groups { get; } = new();
 
     [ObservableProperty]
     public partial string ActionText { get; set; } = string.Empty;
 
     [ObservableProperty]
-    public partial string ModuleRoute { get; set; } = "//Map/SafetyCircle";
+    public partial string ModuleRoute { get; set; } = "//Map";
 
     [ObservableProperty]
     public partial string ModuleName { get; set; } = string.Empty;
@@ -45,15 +36,13 @@ public partial class SafetyCircleOverviewViewModel : ObservableObject
     private async Task LoadDataAsync()
     {
         var data = await _dataService.GetSafetyCircleDataAsync();
-        if (data.Groups.Count >= 2)
+        Groups.Clear();
+        foreach (var group in data.Groups)
         {
-            Circle1Name = data.Groups[0].Name;
-            Circle1Status = data.Groups[0].StatusText;
-            Circle2Name = data.Groups[1].Name;
-            Circle2Status = data.Groups[1].StatusText;
+            Groups.Add(group);
         }
         ActionText = data.ActionText;
-        ModuleRoute = data.ModuleRoute;
+        ModuleRoute = "//Map";
         ModuleName = data.ModuleName;
     }
 
@@ -64,14 +53,11 @@ public partial class SafetyCircleOverviewViewModel : ObservableObject
         {
             try
             {
-                await Shell.Current.GoToAsync(ModuleRoute);
+                await Shell.Current.GoToAsync("//Map");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                await Shell.Current.DisplayAlertAsync(
-                    "Link Redirection",
-                    $"Redirecting to link reference:\n{ModuleRoute}\n\nTarget Module: {ModuleName}",
-                    "OK");
+                System.Diagnostics.Debug.WriteLine($"Navigation error: {ex.Message}");
             }
         }
     }
