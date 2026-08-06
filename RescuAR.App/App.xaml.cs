@@ -10,6 +10,7 @@ public partial class App : Application
         MainPage = splashPage;
     }
 
+
     protected override Window CreateWindow(IActivationState? activationState)
     {
         return new Window(MainPage ?? new AppShell());

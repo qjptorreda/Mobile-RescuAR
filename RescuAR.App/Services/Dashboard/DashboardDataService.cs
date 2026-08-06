@@ -8,7 +8,7 @@ public class DisasterInfoData
     public string Title { get; set; } = "Flood Advisory";
     public string Description { get; set; } = "Water level in Marikina River has reached Alert Level 2";
     public string ActionText { get; set; } = "Disaster Updates";
-    public string ModuleRoute { get; set; } = "//Reports/AdvisoryFeed";
+    public string ModuleRoute { get; set; } = "AdvisoryFeedPage";
     public string ModuleName { get; set; } = "Disaster Updates / Advisory Feed";
 }
 
@@ -56,7 +56,7 @@ public class CommunityReportsOverviewData
 {
     public List<CommunityReportItem> Reports { get; set; } = new();
     public string ActionText { get; set; } = "Recent Reports Nearby";
-    public string ModuleRoute { get; set; } = "//Reports/CommunityPosting";
+    public string ModuleRoute { get; set; } = "//Reports";
     public string ModuleName { get; set; } = "Community Reports Module";
 }
 

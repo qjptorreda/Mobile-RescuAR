@@ -11,6 +11,8 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("Prepare/Assessment", typeof(Views.Prepare.AssessmentPage));
         Routing.RegisterRoute("Prepare/EvacuationCenterInfo", typeof(Views.Prepare.EvacuationCenterInfoPage));
         Routing.RegisterRoute("Prepare/HotlineDirectory", typeof(Views.Prepare.EvacuationCenterInfoPage));
+        Routing.RegisterRoute("AdvisoryFeedPage", typeof(Views.Reports.AdvisoryFeedPage));
+        Routing.RegisterRoute("Reports/AdvisoryFeed", typeof(Views.Reports.AdvisoryFeedPage));
         Routing.RegisterRoute("ProfilePage", typeof(Views.Profile.ProfilePage));
         Routing.RegisterRoute("PersonalInformationPage", typeof(Views.Profile.PersonalInformationPage));
         Routing.RegisterRoute("HealthInformationPage", typeof(Views.Profile.HealthInformationPage));
@@ -24,5 +26,8 @@ public partial class AppShell : Shell
         
         Routing.RegisterRoute("Reports/CommunityPosting", typeof(Views.Reports.CommunityPostingPage));
         Routing.RegisterRoute(nameof(RescuAR.App.Views.Map.CircleChatPage), typeof(RescuAR.App.Views.Map.CircleChatPage));
+        Routing.RegisterRoute("ReportDetails", typeof(Views.Reports.ReportDetailsPage));
+        Routing.RegisterRoute("SafetyCirclePage", typeof(Views.Map.SafetyCirclePage));
+        Routing.RegisterRoute("SummaryPage", typeof(Views.Summary.SummaryPage));
     }
 }

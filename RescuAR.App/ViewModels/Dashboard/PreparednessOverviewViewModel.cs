@@ -21,7 +21,7 @@ public partial class PreparednessOverviewViewModel : ObservableObject
     public partial string ActionText { get; set; } = string.Empty;
 
     [ObservableProperty]
-    public partial string ModuleRoute { get; set; } = "//Prepare/Checklist";
+    public partial string ModuleRoute { get; set; } = "Prepare/Checklist";
 
     [ObservableProperty]
     public partial string ModuleName { get; set; } = string.Empty;
@@ -42,7 +42,7 @@ public partial class PreparednessOverviewViewModel : ObservableObject
         Title = $"{data.PercentReady}% Ready";
         Subtitle = $"{data.PreparedItems} of {data.TotalItems} items prepared";
         ActionText = data.ActionText;
-        ModuleRoute = data.ModuleRoute;
+        ModuleRoute = "Prepare/Checklist";
         ModuleName = data.ModuleName;
     }
 
@@ -53,19 +53,16 @@ public partial class PreparednessOverviewViewModel : ObservableObject
         {
             try
             {
-                string route = ModuleRoute;
-                if (route.StartsWith("//") && !route.Equals("//Camera") && !route.Equals("//Home"))
+                if (Shell.Current.Navigation != null)
                 {
-                    route = route.Substring(2);
+                    await Shell.Current.Navigation.PushAsync(new Views.Prepare.ChecklistPage());
+                    return;
                 }
-                await Shell.Current.GoToAsync(route);
+                await Shell.Current.GoToAsync("Prepare/Checklist");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                await Shell.Current.DisplayAlertAsync(
-                    "Link Redirection",
-                    $"Redirecting to link reference:\n{ModuleRoute}\n\nTarget Module: {ModuleName}",
-                    "OK");
+                System.Diagnostics.Debug.WriteLine($"Navigation error: {ex.Message}");
             }
         }
     }

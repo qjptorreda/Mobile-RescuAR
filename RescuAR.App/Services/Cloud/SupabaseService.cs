@@ -29,21 +29,10 @@ public class SupabaseService
 
     public void LoadKeys()
     {
-        SupabaseUrl = Preferences.Default.Get("SupabaseUrl", PlaceholderUrl);
-        SupabaseKey = Preferences.Default.Get("SupabaseKey", PlaceholderKey);
-        
-        // Reset preferences if they contain old placeholders
-        if (SupabaseUrl == "https://your-supabase-project.supabase.co")
-        {
-            SupabaseUrl = PlaceholderUrl;
-            Preferences.Default.Set("SupabaseUrl", PlaceholderUrl);
-        }
-        if (SupabaseKey == "your-supabase-anon-key")
-        {
-            SupabaseKey = PlaceholderKey;
-            Preferences.Default.Set("SupabaseKey", PlaceholderKey);
-        }
-
+        SupabaseUrl = PlaceholderUrl;
+        SupabaseKey = PlaceholderKey;
+        Preferences.Default.Set("SupabaseUrl", PlaceholderUrl);
+        Preferences.Default.Set("SupabaseKey", PlaceholderKey);
         GoogleWebClientId = Preferences.Default.Get("GoogleWebClientId", "110430882823-ck8pi6d9ngiedo78mmg3gpsf6f2p9ove.apps.googleusercontent.com");
     }
 
@@ -56,6 +45,31 @@ public class SupabaseService
         Preferences.Default.Set("SupabaseKey", SupabaseKey);
         Preferences.Default.Set("GoogleWebClientId", GoogleWebClientId);
         InitializeClient();
+    }
+
+    public async Task<Client?> GetClientAsync()
+    {
+        if (IsMockMode) return null;
+
+        try
+        {
+            if (Client == null)
+            {
+                var options = new SupabaseOptions
+                {
+                    AutoRefreshToken = true,
+                    AutoConnectRealtime = true
+                };
+                Client = new Client(SupabaseUrl, SupabaseKey, options);
+            }
+            await Client.InitializeAsync();
+            return Client;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Supabase GetClientAsync Error: {ex.Message}");
+            return Client;
+        }
     }
 
     public void InitializeClient()
