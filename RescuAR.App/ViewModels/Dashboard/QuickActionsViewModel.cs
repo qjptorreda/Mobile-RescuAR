@@ -23,6 +23,39 @@ public partial class QuickActionItem : ObservableObject
 
     [ObservableProperty]
     public partial string ModuleName { get; set; } = string.Empty;
+
+    [RelayCommand]
+    private async Task OpenActionAsync()
+    {
+        if (Shell.Current != null)
+        {
+            try
+            {
+                if (TargetRoute == "//Reports" || TargetRoute == "Reports")
+                {
+                    foreach (var item in Shell.Current.Items)
+                    {
+                        foreach (var section in item.Items)
+                        {
+                            foreach (var content in section.Items)
+                            {
+                                if (content.Route == "Reports" || content.Title == "Reports")
+                                {
+                                    Shell.Current.CurrentItem = content;
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+                await Shell.Current.GoToAsync(TargetRoute);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Navigation error: {ex.Message}");
+            }
+        }
+    }
 }
 
 public partial class QuickActionsViewModel : ObservableObject
@@ -39,10 +72,10 @@ public partial class QuickActionsViewModel : ObservableObject
         Actions.Add(new QuickActionItem
         {
             Title = "Report Incident",
-            Subtitle = "Report / Create a Report",
+            Subtitle = "Report / Community Reports Feed",
             IconData = "M12,2L1,21H23L12,2M12,6L19.8,20H4.2L12,6M11,10V14H13V10H11M11,16V18H13V16H11Z",
-            TargetRoute = "//Reports/CommunityPosting",
-            ModuleName = "Report Incident Module"
+            TargetRoute = "//Reports",
+            ModuleName = "Community Reports Feed"
         });
 
         Actions.Add(new QuickActionItem
@@ -82,19 +115,28 @@ public partial class QuickActionsViewModel : ObservableObject
         {
             try
             {
-                string route = action.TargetRoute;
-                if (route.StartsWith("//") && !route.Equals("//Camera") && !route.Equals("//Home"))
+                if (action.TargetRoute == "//Reports" || action.TargetRoute == "Reports")
                 {
-                    route = route.Substring(2);
+                    foreach (var item in Shell.Current.Items)
+                    {
+                        foreach (var section in item.Items)
+                        {
+                            foreach (var content in section.Items)
+                            {
+                                if (content.Route == "Reports" || content.Title == "Reports")
+                                {
+                                    Shell.Current.CurrentItem = content;
+                                    return;
+                                }
+                            }
+                        }
+                    }
                 }
-                await Shell.Current.GoToAsync(route);
+                await Shell.Current.GoToAsync(action.TargetRoute);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                await Shell.Current.DisplayAlertAsync(
-                    "Link Redirection",
-                    $"Redirecting to link reference:\n{action.TargetRoute}\n\nTarget Module: {action.ModuleName}",
-                    "OK");
+                System.Diagnostics.Debug.WriteLine($"Navigation error: {ex.Message}");
             }
         }
     }
