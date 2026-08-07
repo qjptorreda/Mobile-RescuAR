@@ -24,10 +24,45 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("TermsConditionsPage", typeof(Views.Profile.TermsConditionsPage));
         Routing.RegisterRoute("SystemInformationPage", typeof(Views.Profile.SystemInformationPage));
         
-        Routing.RegisterRoute("Reports/CommunityPosting", typeof(Views.Reports.CommunityPostingPage));
+        // Routing.RegisterRoute("Reports/CommunityPosting", typeof(Views.Reports.CommunityPostingPage));
         Routing.RegisterRoute(nameof(RescuAR.App.Views.Map.CircleChatPage), typeof(RescuAR.App.Views.Map.CircleChatPage));
         Routing.RegisterRoute("ReportDetails", typeof(Views.Reports.ReportDetailsPage));
         Routing.RegisterRoute("SafetyCirclePage", typeof(Views.Map.SafetyCirclePage));
         Routing.RegisterRoute("SummaryPage", typeof(Views.Summary.SummaryPage));
+    }
+
+    protected override void OnNavigating(ShellNavigatingEventArgs args)
+    {
+        base.OnNavigating(args);
+
+        // Safety: If the shell is not yet fully initialized/constructed, skip checking to prevent startup crash
+        if (Shell.Current == null)
+            return;
+
+        // When navigating to the Home tab, if we are currently inside a sub-page, pop back to the dashboard root.
+        if (args.Target?.Location?.OriginalString.Contains("Home") == true)
+        {
+            try
+            {
+                if (Navigation?.NavigationStack != null && Navigation.NavigationStack.Count > 1)
+                {
+                    MainThread.BeginInvokeOnMainThread(async () =>
+                    {
+                        try
+                        {
+                            await Navigation.PopToRootAsync();
+                        }
+                        catch
+                        {
+                            // Ignore
+                        }
+                    });
+                }
+            }
+            catch
+            {
+                // Ignore any uninitialized navigation stack access exceptions
+            }
+        }
     }
 }
