@@ -51,6 +51,14 @@ public partial class ChecklistViewModel : ObservableObject
     [ObservableProperty]
     public partial string NewItemCategory { get; set; } = "Food & Water";
 
+    public List<string> AvailableCategories { get; } = new()
+    {
+        "Food & Water",
+        "Medical & Safety",
+        "Tools & Power",
+        "Documents"
+    };
+
     public ChecklistViewModel()
     {
         InitializeItems();
@@ -129,6 +137,7 @@ public partial class ChecklistViewModel : ObservableObject
     {
         NewItemTitle = string.Empty;
         NewItemDescription = string.Empty;
+        NewItemCategory = "Food & Water";
         IsAddModalVisible = true;
     }
 
