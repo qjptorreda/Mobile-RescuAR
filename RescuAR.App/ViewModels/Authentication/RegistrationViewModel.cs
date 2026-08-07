@@ -202,7 +202,15 @@ namespace RescuAR.App.ViewModels.Authentication
 
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
-                    if (Application.Current?.MainPage is NavigationPage navPage)
+                    // If email confirmation is disabled in Supabase, the user is logged in immediately
+                    if (session != null && !string.IsNullOrEmpty(session.AccessToken))
+                    {
+                        if (Application.Current != null)
+                        {
+                            Application.Current.MainPage = new AppShell();
+                        }
+                    }
+                    else if (Application.Current?.MainPage is NavigationPage navPage)
                     {
                         var otpPage = _serviceProvider.GetRequiredService<OtpVerificationPage>();
                         var vm = (OtpVerificationViewModel)otpPage.BindingContext;

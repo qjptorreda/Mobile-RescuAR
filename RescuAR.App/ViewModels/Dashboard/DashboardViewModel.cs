@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -17,7 +18,7 @@ public partial class DashboardViewModel : ObservableObject
     private readonly IWeatherService _weatherService;
 
     [ObservableProperty]
-    public partial string UserName { get; set; } = "Aubrey";
+    public partial string UserName { get; set; } = "User";
 
     [ObservableProperty]
     public partial string Greeting { get; set; } = "Good day,";
@@ -64,9 +65,46 @@ public partial class DashboardViewModel : ObservableObject
     [ObservableProperty]
     public partial bool IsPopupVisible { get; set; }
 
+    [ObservableProperty]
+    public partial ObservableCollection<DashboardCarouselItem> CarouselItems { get; set; } = new();
+
     public DashboardViewModel()
     {
         _weatherService = WeatherService.Instance;
+
+        CarouselItems = new ObservableCollection<DashboardCarouselItem>
+        {
+            new DashboardCarouselItem
+            {
+                Id = "1",
+                Title = "Marikina Flood History",
+                Description = "Learn from past floods through photos, documentaries, and news archives to improve your disaster preparedness.",
+                ButtonText = "Learn More",
+                ImageSource = "carousel_flood_history.png",
+                IconData = "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z",
+                ActionType = "LearnMore"
+            },
+            new DashboardCarouselItem
+            {
+                Id = "2",
+                Title = "Be Ready Before the Flood",
+                Description = "Check your emergency kit, prepare important documents, and review your evacuation plan before heavy rainfall.",
+                ButtonText = "View Checklist",
+                ImageSource = "carousel_emergency_kit.png",
+                IconData = "M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z",
+                ActionType = "Checklist"
+            },
+            new DashboardCarouselItem
+            {
+                Id = "3",
+                Title = "AR Safe Route",
+                Description = "Use augmented reality to find the safest evacuation route based on live flood levels, weather, and community reports.",
+                ButtonText = "Start Navigation",
+                ImageSource = "carousel_ar_route.png",
+                IconData = "M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z",
+                ActionType = "Camera"
+            }
+        };
 
         RefreshDashboard();
 
@@ -93,7 +131,6 @@ public partial class DashboardViewModel : ObservableObject
 
     public void RefreshDashboard()
     {
-        UserName = Preferences.Get("UserName", "Aubrey");
         PreparednessScore = Preferences.Get("PASS_Score", 100);
         ScoreProgress = PreparednessScore / 100.0;
         PreparednessStatus = Preferences.Get("PASS_Status", "Highly Prepared");
@@ -103,11 +140,60 @@ public partial class DashboardViewModel : ObservableObject
         else if (hour < 18) Greeting = "Good afternoon,";
         else Greeting = "Good evening,";
 
-        // Load live Open-Meteo weather forecast
         MainThread.BeginInvokeOnMainThread(async () =>
         {
+            await LoadUserProfileAsync();
             await LoadOpenMeteoWeatherAsync();
         });
+    }
+
+    private async Task LoadUserProfileAsync()
+    {
+        try
+        {
+            var client = RescuAR.Services.SupabaseService.Instance.Client;
+            if (client != null && client.Auth.CurrentSession != null)
+            {
+                var authUser = client.Auth.CurrentSession.User;
+                Models.User? dbUser = null;
+                
+                try
+                {
+                    dbUser = await client.From<Models.User>().Where(x => x.Id == authUser.Id).Single();
+                }
+                catch { }
+
+                string firstName = string.Empty;
+
+                if (dbUser != null && !string.IsNullOrWhiteSpace(dbUser.FirstName))
+                {
+                    firstName = dbUser.FirstName;
+                }
+                else if (authUser.UserMetadata != null && authUser.UserMetadata.TryGetValue("first_name", out var fn))
+                {
+                    firstName = fn.ToString();
+                }
+
+                if (!string.IsNullOrWhiteSpace(firstName))
+                {
+                    UserName = firstName;
+                    Preferences.Set("UserName", firstName);
+                }
+                else
+                {
+                    UserName = Preferences.Get("UserName", "RescuAR User");
+                }
+            }
+            else
+            {
+                UserName = Preferences.Get("UserName", "RescuAR User");
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Profile Load Error: {ex.Message}");
+            UserName = Preferences.Get("UserName", "RescuAR User");
+        }
     }
 
     private async Task LoadOpenMeteoWeatherAsync()
@@ -224,6 +310,57 @@ public partial class DashboardViewModel : ObservableObject
     private void ClosePopup()
     {
         IsPopupVisible = false;
+    }
+
+    [RelayCommand]
+    private async Task OpenTranslationMenuAsync()
+    {
+        if (SelectedAdvisory == null || Shell.Current == null) return;
+
+        string result = await Shell.Current.DisplayActionSheetAsync("Translation", "Cancel", null, "English", "Tagalog");
+        if (result == "Tagalog")
+        {
+            SelectedAdvisory.SetLanguage(true);
+        }
+        else if (result == "English")
+        {
+            SelectedAdvisory.SetLanguage(false);
+        }
+    }
+
+    [RelayCommand]
+    private async Task OpenCameraAsync()
+    {
+        if (Shell.Current != null)
+        {
+            try
+            {
+                await Shell.Current.GoToAsync("//Camera");
+            }
+            catch
+            {
+                await Shell.Current.GoToAsync("CameraPage");
+            }
+        }
+    }
+
+    [RelayCommand]
+    private async Task ExecuteCarouselActionAsync(DashboardCarouselItem item)
+    {
+        if (item == null || Shell.Current == null) return;
+
+        if (item.ActionType == "Checklist")
+        {
+            await OpenChecklistAsync();
+        }
+        else if (item.ActionType == "Camera")
+        {
+            await OpenCameraAsync();
+        }
+        else if (item.ActionType == "LearnMore")
+        {
+            await Shell.Current.GoToAsync("Prepare/FloodHistory");
+        }
     }
 
     [RelayCommand]

@@ -18,6 +18,18 @@ namespace RescuAR.App.ViewModels.Reports
         private readonly CommunityReportService _reportService;
         private readonly IOsmGeocodingService _osmService;
 
+        private readonly HashSet<string> _seenReportIds = new();
+        private bool _isFirstLoad = true;
+
+        [ObservableProperty]
+        private ObservableCollection<ReportNotification> notifications = new();
+
+        [ObservableProperty]
+        private int unreadNotificationsCount;
+
+        [ObservableProperty]
+        private bool isNotificationsModalVisible;
+
         [ObservableProperty]
         private ObservableCollection<CommunityReport> reports = new();
 
@@ -117,7 +129,15 @@ namespace RescuAR.App.ViewModels.Reports
         {
             _reportService = reportService;
             _osmService = osmService;
+
+            // Fetch reports initially when VM is created
             _ = LoadReportsAsync();
+
+            RescuAR.App.Services.Reports.RealtimeAdvisoryManager.OnNewAdvisoryPushed += (newAdvisory) =>
+            {
+                SelectedAdvisory = newAdvisory;
+                IsPopupVisible = true;
+            };
         }
 
         partial void OnSearchQueryChanged(string value)
@@ -167,6 +187,31 @@ namespace RescuAR.App.ViewModels.Reports
             try
             {
                 var list = await _reportService.GetReportsAsync(SearchQuery, SelectedFilter);
+                
+                if (!_isFirstLoad)
+                {
+                    foreach (var report in list)
+                    {
+                        if (!_seenReportIds.Contains(report.Id))
+                        {
+                            var notification = new ReportNotification
+                            {
+                                Title = $"New {report.Category}",
+                                Message = $"{report.PostedBy} reported: {report.Title} in {report.Address}",
+                                Timestamp = DateTime.Now
+                            };
+                            Notifications.Insert(0, notification);
+                            UnreadNotificationsCount++;
+                        }
+                    }
+                }
+                
+                foreach (var report in list)
+                {
+                    _seenReportIds.Add(report.Id);
+                }
+                _isFirstLoad = false;
+
                 Reports = new ObservableCollection<CommunityReport>(list);
             }
             catch (Exception ex)
@@ -433,18 +478,14 @@ namespace RescuAR.App.ViewModels.Reports
         {
             if (report == null) return;
 
-            if (report.IsLikedByCurrentUser)
-            {
-                report.IsLikedByCurrentUser = false;
-                report.LikeCount = Math.Max(0, report.LikeCount - 1);
-            }
-            else
-            {
-                report.IsLikedByCurrentUser = true;
-                report.LikeCount++;
-            }
-
             await _reportService.ToggleLikeAsync(report.Id);
+
+            var updatedReport = _reportService.Reports.FirstOrDefault(r => r.Id == report.Id);
+            if (updatedReport != null && updatedReport != report)
+            {
+                report.IsLikedByCurrentUser = updatedReport.IsLikedByCurrentUser;
+                report.LikeCount = updatedReport.LikeCount;
+            }
 
             var index = Reports.IndexOf(report);
             if (index >= 0)
@@ -453,5 +494,63 @@ namespace RescuAR.App.ViewModels.Reports
                 Reports[index] = report;
             }
         }
+
+        [RelayCommand]
+        private void OpenNotificationsModal()
+        {
+            IsNotificationsModalVisible = true;
+            foreach (var notif in Notifications)
+            {
+                notif.IsRead = true;
+            }
+            UnreadNotificationsCount = 0;
+        }
+
+        [RelayCommand]
+        private void CloseNotificationsModal()
+        {
+            IsNotificationsModalVisible = false;
+        }
+
+        [RelayCommand]
+        private void ClearNotifications()
+        {
+            Notifications.Clear();
+            UnreadNotificationsCount = 0;
+        }
+
+        // --- Advisory Popup ---
+        [ObservableProperty]
+        private RescuAR.App.Models.DisasterAdvisory? _selectedAdvisory;
+
+        [ObservableProperty]
+        private bool _isPopupVisible;
+
+        [RelayCommand]
+        private void ClosePopup()
+        {
+            IsPopupVisible = false;
+            SelectedAdvisory = null;
+        }
+
+        [RelayCommand]
+        private async Task GoToAdvisoriesFeedAsync()
+        {
+            ClosePopup();
+            if (Shell.Current != null)
+            {
+                await Shell.Current.GoToAsync("AdvisoryFeedPage");
+            }
+        }
+    }
+
+    public class ReportNotification
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Title { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
+        public DateTime Timestamp { get; set; } = DateTime.Now;
+        public bool IsRead { get; set; } = false;
+        public string TimestampText => Timestamp.ToString("hh:mm tt");
     }
 }

@@ -58,7 +58,20 @@ public class CommunityReportService
                             break;
                     }
 
-                    return list.ToList();
+                    var fetchedList = list.ToList();
+
+                    // Apply local liked status & sync to Reports cache
+                    var likedReportIds = Microsoft.Maui.Storage.Preferences.Default.Get("LikedReportIds", "");
+                    var likedSet = new HashSet<string>(likedReportIds.Split(',', StringSplitOptions.RemoveEmptyEntries));
+
+                    Reports.Clear();
+                    foreach (var item in fetchedList)
+                    {
+                        item.IsLikedByCurrentUser = likedSet.Contains(item.Id);
+                        Reports.Add(item);
+                    }
+
+                    return fetchedList;
                 }
             }
             catch (Exception ex)
@@ -67,10 +80,22 @@ public class CommunityReportService
             }
         }
 
-        return GetFallbackReports().Where(r => 
+        var fallbackList = GetFallbackReports().Where(r => 
             !string.IsNullOrWhiteSpace(r.Status) && 
             (r.Status.Equals("Approved", StringComparison.OrdinalIgnoreCase) || 
              r.Status.Equals("Resolved", StringComparison.OrdinalIgnoreCase))).ToList();
+
+        var fallbackLikedReportIds = Microsoft.Maui.Storage.Preferences.Default.Get("LikedReportIds", "");
+        var fallbackLikedSet = new HashSet<string>(fallbackLikedReportIds.Split(',', StringSplitOptions.RemoveEmptyEntries));
+
+        Reports.Clear();
+        foreach (var item in fallbackList)
+        {
+            item.IsLikedByCurrentUser = fallbackLikedSet.Contains(item.Id);
+            Reports.Add(item);
+        }
+
+        return fallbackList;
     }
 
     public async Task AddReportAsync(CommunityReport report)
@@ -114,7 +139,7 @@ public class CommunityReportService
         }
     }
 
-    public Task AddCommentAsync(string reportId, string content, string authorName)
+    public async Task AddCommentAsync(string reportId, string content, string authorName)
     {
         var report = Reports.FirstOrDefault(r => r.Id == reportId);
         if (report != null && report.AllowComments)
@@ -128,27 +153,58 @@ public class CommunityReportService
             };
             report.Comments.Add(comment);
             report.NotifyCommentsChanged();
+
+            var client = await GetClientAsync();
+            if (client != null)
+            {
+                try
+                {
+                    await client.From<CommunityReport>().Update(report);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Supabase AddComment Error: {ex.Message}");
+                }
+            }
         }
-        return Task.CompletedTask;
     }
 
-    public Task ToggleLikeAsync(string reportId)
+    public async Task ToggleLikeAsync(string reportId)
     {
         var report = Reports.FirstOrDefault(r => r.Id == reportId);
         if (report != null)
         {
+            var likedReportIds = Microsoft.Maui.Storage.Preferences.Default.Get("LikedReportIds", "");
+            var likedSet = new HashSet<string>(likedReportIds.Split(',', StringSplitOptions.RemoveEmptyEntries));
+
             if (report.IsLikedByCurrentUser)
             {
                 report.IsLikedByCurrentUser = false;
                 report.LikeCount = Math.Max(0, report.LikeCount - 1);
+                likedSet.Remove(report.Id);
             }
             else
             {
                 report.IsLikedByCurrentUser = true;
                 report.LikeCount++;
+                likedSet.Add(report.Id);
+            }
+
+            Microsoft.Maui.Storage.Preferences.Default.Set("LikedReportIds", string.Join(",", likedSet));
+
+            var client = await GetClientAsync();
+            if (client != null)
+            {
+                try
+                {
+                    await client.From<CommunityReport>().Update(report);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Supabase ToggleLike Error: {ex.Message}");
+                }
             }
         }
-        return Task.CompletedTask;
     }
 
     private List<CommunityReport> GetFallbackReports()

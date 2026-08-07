@@ -44,8 +44,7 @@
                     </Grid>
                 </Border>
 
-                <!-- Error Message -->
-                <Label Text="{Binding ErrorMessage}" TextColor="#D8000C" FontSize="13" FontFamily="OpenSansSemibold" HorizontalOptions="Center" HorizontalTextAlignment="Center" IsVisible="{Binding HasError}" Margin="0, -10, 0, 0" />
+                <!-- Error Message Moved To Bottom -->
 
                 <!-- First Name and Last Name Fields (Side by Side) -->
                 <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
@@ -285,15 +284,14 @@
                     </Label>
                 </Grid>
 
+                <!-- Error Message -->
+                <Label Text="{Binding ErrorMessage}" TextColor="#D8000C" FontSize="13" FontFamily="OpenSansSemibold" HorizontalOptions="Center" HorizontalTextAlignment="Center" IsVisible="{Binding HasError}" Margin="0, 5, 0, 5" />
+
+
                 <!-- Sign Up Button -->
                 <Grid Margin="0, 10, 0, 0">
-                    <Border StrokeThickness="0" BackgroundColor="#00848E" StrokeShape="RoundRectangle 25" HeightRequest="50" IsVisible="{Binding IsNotLoading}">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding CreateAccountCommand}" />
-                        </Border.GestureRecognizers>
-                        <Label Text="Sign Up" TextColor="White" FontFamily="OpenSansSemibold" FontSize="16" HorizontalOptions="Center" VerticalOptions="Center" />
-                    </Border>
-                    <ActivityIndicator IsRunning="{Binding IsLoading}" Color="White" HeightRequest="50" HorizontalOptions="Center" IsVisible="{Binding IsLoading}" />
+                    <Button Text="Sign Up" BackgroundColor="#00848E" TextColor="White" FontFamily="OpenSansSemibold" FontSize="16" CornerRadius="25" HeightRequest="50" Command="{Binding CreateAccountCommand}" IsVisible="{Binding IsNotLoading}" />
+                    <ActivityIndicator IsRunning="{Binding IsLoading}" Color="#00848E" HeightRequest="50" HorizontalOptions="Center" IsVisible="{Binding IsLoading}" />
                 </Grid>
 
             </VerticalStackLayout>

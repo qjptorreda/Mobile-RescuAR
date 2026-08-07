@@ -24,10 +24,16 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("TermsConditionsPage", typeof(Views.Profile.TermsConditionsPage));
         Routing.RegisterRoute("SystemInformationPage", typeof(Views.Profile.SystemInformationPage));
         
-        Routing.RegisterRoute("Reports/CommunityPosting", typeof(Views.Reports.CommunityPostingPage));
+        
         Routing.RegisterRoute(nameof(RescuAR.App.Views.Map.CircleChatPage), typeof(RescuAR.App.Views.Map.CircleChatPage));
         Routing.RegisterRoute("ReportDetails", typeof(Views.Reports.ReportDetailsPage));
         Routing.RegisterRoute("SafetyCirclePage", typeof(Views.Map.SafetyCirclePage));
         Routing.RegisterRoute("SummaryPage", typeof(Views.Summary.SummaryPage));
+        Routing.RegisterRoute("CameraPage", typeof(Views.Camera.CameraPage));
+        Routing.RegisterRoute("Prepare/FloodHistory", typeof(Views.Prepare.FloodHistoryPage));
+        Routing.RegisterRoute("FloodHistoryPage", typeof(Views.Prepare.FloodHistoryPage));
+        Routing.RegisterRoute("Prepare/HistoricalPhotos", typeof(Views.Prepare.HistoricalPhotosPage));
+        Routing.RegisterRoute("Prepare/DocumentaryVideos", typeof(Views.Prepare.DocumentaryVideosPage));
+        Routing.RegisterRoute("Prepare/FloodTimeline", typeof(Views.Prepare.FloodTimelinePage));
     }
 }

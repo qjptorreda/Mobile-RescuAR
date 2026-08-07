@@ -1,13 +1,22 @@
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
+using RescuAR.App.Services.Translation;
 
 namespace RescuAR.App.Models;
 
 [Table("advisories")]
-public class DisasterAdvisory : BaseModel
+public class DisasterAdvisory : BaseModel, INotifyPropertyChanged
 {
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
     [PrimaryKey("id", false)]
     public string Id { get; set; } = Guid.NewGuid().ToString();
 
@@ -46,6 +55,30 @@ public class DisasterAdvisory : BaseModel
 
     [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    [JsonIgnore]
+    public bool IsTagalog { get; set; }
+
+    public void SetLanguage(bool isTagalog)
+    {
+        IsTagalog = isTagalog;
+        OnPropertyChanged(nameof(IsTagalog));
+        OnPropertyChanged(nameof(DisplayAlertLevelText));
+        OnPropertyChanged(nameof(DisplayTitleText));
+        OnPropertyChanged(nameof(DisplayMessageText));
+        OnPropertyChanged(nameof(DisplayActionPlanText));
+        OnPropertyChanged(nameof(DisplayAffectedAreaText));
+        OnPropertyChanged(nameof(HeaderTagText));
+        OnPropertyChanged(nameof(ActionPlanHeaderTagText));
+        OnPropertyChanged(nameof(AffectedAreaHeaderTagText));
+        OnPropertyChanged(nameof(CloseButtonText));
+        OnPropertyChanged(nameof(DetailsButtonText));
+    }
+
+    public void ToggleLanguage()
+    {
+        SetLanguage(!IsTagalog);
+    }
 
     // Robust UI Display Getters decorated with JsonIgnore
     [JsonIgnore]
@@ -91,6 +124,39 @@ public class DisasterAdvisory : BaseModel
             return "Marikina City";
         }
     }
+
+    [JsonIgnore]
+    public string DisplayAlertLevelText => IsTagalog ? AdvisoryTranslationService.TranslateAlertLevel(DisplayAlertLevel) : DisplayAlertLevel;
+
+    [JsonIgnore]
+    public string DisplayTitleText => IsTagalog ? AdvisoryTranslationService.TranslateText(Title) : Title;
+
+    [JsonIgnore]
+    public string DisplayMessageText => IsTagalog ? AdvisoryTranslationService.TranslateText(DisplayMessage) : DisplayMessage;
+
+    [JsonIgnore]
+    public string DisplayActionPlanText => IsTagalog ? AdvisoryTranslationService.TranslateText(DisplayActionPlan) : DisplayActionPlan;
+
+    [JsonIgnore]
+    public string DisplayAffectedAreaText => IsTagalog ? AdvisoryTranslationService.TranslateText(DisplayAffectedArea) : DisplayAffectedArea;
+
+    [JsonIgnore]
+    public string HeaderTagText => IsTagalog ? "BAGONG ADVISORY SA SAKUNA" : "NEW EMERGENCY ADVISORY";
+
+    [JsonIgnore]
+    public string ActionPlanHeaderTagText => IsTagalog ? "MGA REKOMENDADONG HAKBANGIN" : "RECOMMENDED ACTION PLAN";
+
+    [JsonIgnore]
+    public string AffectedAreaHeaderTagText => IsTagalog ? "MGA APEKTADONG LUGAR" : "AFFECTED AREA SECTORS";
+
+    [JsonIgnore]
+    public string LanguageButtonLabel => IsTagalog ? "🌐 Tagalog" : "🌐 English";
+
+    [JsonIgnore]
+    public string CloseButtonText => IsTagalog ? "Isara" : "Close";
+
+    [JsonIgnore]
+    public string DetailsButtonText => IsTagalog ? "Buong Detalye" : "See Full Details";
 
     [JsonIgnore]
     public bool HasActionPlan => !string.IsNullOrWhiteSpace(DisplayActionPlan);

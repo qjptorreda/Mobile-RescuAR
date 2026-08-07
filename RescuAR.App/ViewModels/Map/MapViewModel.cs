@@ -130,4 +130,38 @@ public partial class MapViewModel : ObservableObject
             await Shell.Current.GoToAsync(nameof(RescuAR.App.Views.Map.CircleChatPage));
         }
     }
+
+    // --- Advisory Popup ---
+    [ObservableProperty]
+    private RescuAR.App.Models.DisasterAdvisory? _selectedAdvisory;
+
+    [ObservableProperty]
+    private bool _isPopupVisible;
+
+    [RelayCommand]
+    private void ClosePopup()
+    {
+        IsPopupVisible = false;
+        SelectedAdvisory = null;
+    }
+
+    [RelayCommand]
+    private async Task GoToAdvisoriesFeedAsync()
+    {
+        ClosePopup();
+        if (Shell.Current != null)
+        {
+            await Shell.Current.GoToAsync("AdvisoryFeedPage");
+        }
+    }
+
+    partial void OnMapChanged(Mapsui.Map value)
+    {
+        // One-time listener attachment
+        RescuAR.App.Services.Reports.RealtimeAdvisoryManager.OnNewAdvisoryPushed += (newAdvisory) =>
+        {
+            SelectedAdvisory = newAdvisory;
+            IsPopupVisible = true;
+        };
+    }
 }

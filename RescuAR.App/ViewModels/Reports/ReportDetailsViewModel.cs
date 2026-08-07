@@ -79,10 +79,20 @@ namespace RescuAR.App.ViewModels.Reports
         {
             if (Report == null || string.IsNullOrWhiteSpace(NewCommentText)) return;
 
+            if (!Report.AllowComments)
+            {
+                if (Shell.Current != null)
+                {
+                    await Shell.Current.DisplayAlertAsync("Comments Disabled", "Comments are disabled for this report.", "OK");
+                }
+                return;
+            }
+
             var text = NewCommentText.Trim();
             NewCommentText = string.Empty;
 
-            await _reportService.AddCommentAsync(Report.Id, text, "Aubrey T.");
+            var authorName = Microsoft.Maui.Storage.Preferences.Get("UserName", "User");
+            await _reportService.AddCommentAsync(Report.Id, text, authorName);
             UpdateNoCommentsState();
         }
 

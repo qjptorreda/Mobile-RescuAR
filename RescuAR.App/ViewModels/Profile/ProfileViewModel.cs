@@ -36,6 +36,12 @@ namespace RescuAR.App.ViewModels.Profile
         public ProfileViewModel()
         {
             _ = LoadUserProfileAsync();
+
+            RescuAR.App.Services.Reports.RealtimeAdvisoryManager.OnNewAdvisoryPushed += (newAdvisory) =>
+            {
+                SelectedAdvisory = newAdvisory;
+                IsPopupVisible = true;
+            };
         }
 
         private async Task LoadUserProfileAsync()
@@ -295,6 +301,30 @@ namespace RescuAR.App.ViewModels.Profile
                     CurrentUser.CircleId = CurrentCircle.CircleId;
                     IsInCircle = true;
                 }
+            }
+        }
+
+        // --- Advisory Popup ---
+        [ObservableProperty]
+        private RescuAR.App.Models.DisasterAdvisory? _selectedAdvisory;
+
+        [ObservableProperty]
+        private bool _isPopupVisible;
+
+        [RelayCommand]
+        private void ClosePopup()
+        {
+            IsPopupVisible = false;
+            SelectedAdvisory = null;
+        }
+
+        [RelayCommand]
+        private async Task GoToAdvisoriesFeedAsync()
+        {
+            ClosePopup();
+            if (Shell.Current != null)
+            {
+                await Shell.Current.GoToAsync("AdvisoryFeedPage");
             }
         }
     }

@@ -71,7 +71,8 @@ public static class MauiProgram
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<TermsAndConditionsPage>();
-            builder.Services.AddTransient<PrivacyPolicyPage>();
+            builder.Services.AddTransient<RescuAR.App.Views.Authentication.PrivacyPolicyPage>();
+            builder.Services.AddTransient<RescuAR.App.Views.Profile.PrivacyPolicyPage>();
             
             builder.Services.AddTransient<DashboardViewModel>();
             builder.Services.AddTransient<DashboardPage>();
@@ -112,6 +113,15 @@ public static class MauiProgram
             builder.Services.AddTransient<EvacuationCenterInfoPage>();
             builder.Services.AddTransient<ReportDetailsPage>();
             builder.Services.AddTransient<ReportDetailsViewModel>();
+
+            builder.Services.AddTransient<FloodHistoryPage>();
+            builder.Services.AddTransient<FloodHistoryViewModel>();
+            builder.Services.AddTransient<HistoricalPhotosPage>();
+            builder.Services.AddTransient<HistoricalPhotosViewModel>();
+            builder.Services.AddTransient<DocumentaryVideosPage>();
+            builder.Services.AddTransient<DocumentaryVideosViewModel>();
+            builder.Services.AddTransient<FloodTimelinePage>();
+            builder.Services.AddTransient<FloodTimelineViewModel>();
 
             // Summary & Advisory Pages
             builder.Services.AddTransient<RescuAR.App.Views.Summary.SummaryPage>();

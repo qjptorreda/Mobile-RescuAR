@@ -224,14 +224,27 @@
                 <VerticalStackLayout Spacing="0">
                    
                     <!-- Pop-up Header Banner -->
-                    <Border BackgroundColor="{Binding SelectedAdvisory.AlertBadgeBg}" StrokeThickness="0" StrokeShape="RoundRectangle 24 24 0 0" Padding="20,16">
-                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" VerticalOptions="Center">
+                    <Border BackgroundColor="{Binding SelectedAdvisory.AlertBadgeBg}" StrokeThickness="0" StrokeShape="RoundRectangle 24 24 0 0" Padding="16,14">
+                        <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="8" VerticalOptions="Center">
                             <Ellipse WidthRequest="8" HeightRequest="8" Fill="{Binding SelectedAdvisory.AlertBadgeText}" VerticalOptions="Center" />
                             <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
-                                <Label Text="EMERGENCY ADVISORY" TextColor="{Binding SelectedAdvisory.AlertBadgeText}" FontSize="10" FontAttributes="Bold" />
-                                <Label Text="{Binding SelectedAdvisory.DisplayAlertLevel}" TextColor="{Binding SelectedAdvisory.AlertBadgeText}" FontSize="16" FontAttributes="Bold" />
+                                <Label Text="{Binding SelectedAdvisory.HeaderTagText}" TextColor="{Binding SelectedAdvisory.AlertBadgeText}" FontSize="10" FontAttributes="Bold" />
+                                <Label Text="{Binding SelectedAdvisory.DisplayAlertLevelText}" TextColor="{Binding SelectedAdvisory.AlertBadgeText}" FontSize="15" FontAttributes="Bold" />
                             </VerticalStackLayout>
-                            <Border Grid.Column="2" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 14" WidthRequest="32" HeightRequest="32" VerticalOptions="Center">
+
+                            <!-- Language Translation Dropdown Button -->
+                            <Border Grid.Column="2" BackgroundColor="#FFFFFF" StrokeThickness="1" Stroke="{Binding SelectedAdvisory.AlertBadgeText}" StrokeShape="RoundRectangle 12" Padding="10,5" VerticalOptions="Center">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OpenTranslationMenuCommand}" />
+                                </Border.GestureRecognizers>
+                                <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
+                                    <Label Text="Translation" TextColor="{Binding SelectedAdvisory.AlertBadgeText}" FontSize="11" FontAttributes="Bold" VerticalOptions="Center" />
+                                    <Label Text="▾" TextColor="{Binding SelectedAdvisory.AlertBadgeText}" FontSize="11" FontAttributes="Bold" VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+                            </Border>
+
+                            <!-- Close Button -->
+                            <Border Grid.Column="3" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 14" WidthRequest="32" HeightRequest="32" VerticalOptions="Center">
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding ClosePopupCommand}" />
                                 </Border.GestureRecognizers>
@@ -244,24 +257,24 @@
                     <ScrollView MaximumHeightRequest="420" Padding="20">
                         <VerticalStackLayout Spacing="14">
                             <!-- Title -->
-                            <Label Text="{Binding SelectedAdvisory.Title}" TextColor="#0F172A" FontSize="19" FontAttributes="Bold" />
+                            <Label Text="{Binding SelectedAdvisory.DisplayTitleText}" TextColor="#0F172A" FontSize="19" FontAttributes="Bold" />
 
                             <!-- Message -->
-                            <Label Text="{Binding SelectedAdvisory.DisplayMessage}" TextColor="#334155" FontSize="13" LineBreakMode="WordWrap" CharacterSpacing="0.2" />
+                            <Label Text="{Binding SelectedAdvisory.DisplayMessageText}" TextColor="#334155" FontSize="13" LineBreakMode="WordWrap" CharacterSpacing="0.2" />
 
                             <!-- Recommended Action Plan -->
                             <Border IsVisible="{Binding SelectedAdvisory.HasActionPlan}" BackgroundColor="#FFFBEB" Stroke="#FDE68A" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="14,10">
                                 <VerticalStackLayout Spacing="4">
-                                    <Label Text="RECOMMENDED ACTION PLAN" TextColor="#B45309" FontSize="10" FontAttributes="Bold" />
-                                    <Label Text="{Binding SelectedAdvisory.DisplayActionPlan}" TextColor="#92400E" FontSize="12" LineBreakMode="WordWrap" />
+                                    <Label Text="{Binding SelectedAdvisory.ActionPlanHeaderTagText}" TextColor="#B45309" FontSize="10" FontAttributes="Bold" />
+                                    <Label Text="{Binding SelectedAdvisory.DisplayActionPlanText}" TextColor="#92400E" FontSize="12" LineBreakMode="WordWrap" />
                                 </VerticalStackLayout>
                             </Border>
 
                             <!-- Affected Sectors -->
                             <Border BackgroundColor="#F8FAFC" Stroke="#E2E8F0" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="12,10">
                                 <VerticalStackLayout Spacing="2">
-                                    <Label Text="AFFECTED AREA SECTORS" TextColor="#64748B" FontSize="10" FontAttributes="Bold" />
-                                    <Label Text="{Binding SelectedAdvisory.DisplayAffectedArea}" TextColor="#0F172A" FontSize="12" FontAttributes="Bold" LineBreakMode="WordWrap" />
+                                    <Label Text="{Binding SelectedAdvisory.AffectedAreaHeaderTagText}" TextColor="#64748B" FontSize="10" FontAttributes="Bold" />
+                                    <Label Text="{Binding SelectedAdvisory.DisplayAffectedAreaText}" TextColor="#0F172A" FontSize="12" FontAttributes="Bold" LineBreakMode="WordWrap" />
                                 </VerticalStackLayout>
                             </Border>
 
@@ -277,8 +290,8 @@
 
                     <!-- Pop-up Footer Buttons -->
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Padding="20,16" BackgroundColor="#F8FAFC">
-                        <Button Grid.Column="0" Text="Close" TextColor="#475569" BackgroundColor="#E2E8F0" CornerRadius="12" HeightRequest="44" FontSize="13" FontAttributes="Bold" Command="{Binding ClosePopupCommand}" />
-                        <Button Grid.Column="1" Text="See Full Feed" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="12" HeightRequest="44" FontSize="13" FontAttributes="Bold" Command="{Binding GoToAdvisoriesFeedCommand}" />
+                        <Button Grid.Column="0" Text="{Binding SelectedAdvisory.CloseButtonText}" TextColor="#475569" BackgroundColor="#E2E8F0" CornerRadius="12" HeightRequest="44" FontSize="13" FontAttributes="Bold" Command="{Binding ClosePopupCommand}" />
+                        <Button Grid.Column="1" Text="{Binding SelectedAdvisory.DetailsButtonText}" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="12" HeightRequest="44" FontSize="13" FontAttributes="Bold" Command="{Binding GoToAdvisoriesFeedCommand}" />
                     </Grid>
 
                 </VerticalStackLayout>
