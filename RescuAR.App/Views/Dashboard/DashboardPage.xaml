@@ -124,12 +124,16 @@
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding OpenChecklistCommand}" />
                         </Border.GestureRecognizers>
-                        <VerticalStackLayout Spacing="5" VerticalOptions="Center">
-                            <Border BackgroundColor="#DCFCE7" StrokeThickness="0" StrokeShape="RoundRectangle 6" Padding="6,2" HorizontalOptions="Start">
-                                <Label Text="CHECKLIST" TextColor="#166534" FontSize="9" FontAttributes="Bold" />
-                            </Border>
-                            <Label Text="Kit Checklist" TextColor="#0F172A" FontSize="14" FontAttributes="Bold" Margin="0,2,0,0" LineBreakMode="TailTruncation" />
-                            <Label Text="10 Supplies" TextColor="#64748B" FontSize="10" LineBreakMode="TailTruncation" />
+                        <VerticalStackLayout Spacing="4" VerticalOptions="Center" HorizontalOptions="Center">
+                            <Path Data="M19,6H16V5a2,2 0 0,0 -2,-2H10A2,2 0 0,0 8,5V6H5A2,2 0 0,0 3,8V19a2,2 0 0,0 2,2H19a2,2 0 0,0 2,-2V8A2,2 0 0,0 19,6M10,5h4V6H10V5M16,14H13V17H11V14H8V12H11V9H13V12H16V14Z"
+                                  Fill="#64748B"
+                                  WidthRequest="24"
+                                  HeightRequest="24"
+                                  Aspect="Uniform"
+                                  HorizontalOptions="Center"
+                                  Margin="0,0,0,2" />
+                            <Label Text="Kit Checklist" TextColor="#0F172A" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
+                            <Label Text="10 Supplies" TextColor="#64748B" FontSize="10" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
                         </VerticalStackLayout>
                     </Border>
 
@@ -138,12 +142,16 @@
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding OpenEvacuationCommand}" />
                         </Border.GestureRecognizers>
-                        <VerticalStackLayout Spacing="5" VerticalOptions="Center">
-                            <Border BackgroundColor="#DBEAFE" StrokeThickness="0" StrokeShape="RoundRectangle 6" Padding="6,2" HorizontalOptions="Start">
-                                <Label Text="SHELTERS" TextColor="#1D4ED8" FontSize="9" FontAttributes="Bold" />
-                            </Border>
-                            <Label Text="Evacuation" TextColor="#0F172A" FontSize="14" FontAttributes="Bold" Margin="0,2,0,0" LineBreakMode="TailTruncation" />
-                            <Label Text="Real-Time" TextColor="#64748B" FontSize="10" LineBreakMode="TailTruncation" />
+                        <VerticalStackLayout Spacing="4" VerticalOptions="Center" HorizontalOptions="Center">
+                            <Path Data="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"
+                                  Fill="#64748B"
+                                  WidthRequest="24"
+                                  HeightRequest="24"
+                                  Aspect="Uniform"
+                                  HorizontalOptions="Center"
+                                  Margin="0,0,0,2" />
+                            <Label Text="Evacuation" TextColor="#0F172A" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
+                            <Label Text="Real-Time" TextColor="#64748B" FontSize="10" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
                         </VerticalStackLayout>
                     </Border>
 
@@ -152,12 +160,16 @@
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding OpenSafetyCircleCommand}" />
                         </Border.GestureRecognizers>
-                        <VerticalStackLayout Spacing="5" VerticalOptions="Center">
-                            <Border BackgroundColor="#F3E8FF" StrokeThickness="0" StrokeShape="RoundRectangle 6" Padding="6,2" HorizontalOptions="Start">
-                                <Label Text="MAP / CIRCLE" TextColor="#6B21A8" FontSize="9" FontAttributes="Bold" />
-                            </Border>
-                            <Label Text="Safety Circle" TextColor="#0F172A" FontSize="14" FontAttributes="Bold" Margin="0,2,0,0" LineBreakMode="TailTruncation" />
-                            <Label Text="Family Status" TextColor="#64748B" FontSize="10" LineBreakMode="TailTruncation" />
+                        <VerticalStackLayout Spacing="4" VerticalOptions="Center" HorizontalOptions="Center">
+                            <Path Data="M15,5L9,2.89L3,5V21L9,18.89L15,21L21,18V5L15,5M15,19L9,16.89V4.11L15,6.22V19Z"
+                                  Fill="#64748B"
+                                  WidthRequest="24"
+                                  HeightRequest="24"
+                                  Aspect="Uniform"
+                                  HorizontalOptions="Center"
+                                  Margin="0,0,0,2" />
+                            <Label Text="Safety Circle" TextColor="#0F172A" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
+                            <Label Text="Family Status" TextColor="#64748B" FontSize="10" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
                         </VerticalStackLayout>
                     </Border>
 
@@ -256,7 +268,6 @@
 
                 </VerticalStackLayout>
             </Border>
-        </Grid>
         </Grid>
     </Grid>
 </ContentPage>
