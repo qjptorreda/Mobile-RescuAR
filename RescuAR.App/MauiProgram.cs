@@ -70,9 +70,10 @@ public static class MauiProgram
             builder.Services.AddTransient<GoogleAuthViewModel>();
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<LoginPage>();
-            builder.Services.AddTransient<TermsAndConditionsPage>();
+            builder.Services.AddTransient<RescuAR.App.Views.Authentication.TermsAndConditionsPage>();
             builder.Services.AddTransient<RescuAR.App.Views.Authentication.PrivacyPolicyPage>();
             builder.Services.AddTransient<RescuAR.App.Views.Profile.PrivacyPolicyPage>();
+            builder.Services.AddTransient<RescuAR.App.Views.Profile.TermsConditionsPage>();
             
             builder.Services.AddTransient<DashboardViewModel>();
             builder.Services.AddTransient<DashboardPage>();

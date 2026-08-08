@@ -213,12 +213,16 @@
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding OpenChecklistCommand}" />
                         </Border.GestureRecognizers>
-                        <VerticalStackLayout Spacing="6" HorizontalOptions="Center" VerticalOptions="Center">
-                            <!-- Medical Bag / Kit Icon -->
-                            <Path Data="M20,6H16V4C16,2.89 15.11,2 14,2H10C8.89,2 8,2.89 8,4V6H4C2.89,6 2,6.89 2,8V19C2,20.11 2.89,21 4,21H20C21.11,21 22,20.11 22,19V8C22,6.89 21.11,6 20,6ZM10,4H14V6H10V4ZM20,19H4V8H20V19ZM13,10H11V13H8V15H11V18H13V15H16V13H13V10Z"
-                                  Fill="#94A3B8" WidthRequest="28" HeightRequest="28" Aspect="Uniform" HorizontalOptions="Center" Margin="0,0,0,6" />
-                            <Label Text="Kit Checklist" TextColor="#0F172A" FontSize="13" FontAttributes="Bold" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
-                            <Label Text="10 Supplies" TextColor="#94A3B8" FontSize="10" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+                        <VerticalStackLayout Spacing="4" VerticalOptions="Center" HorizontalOptions="Center">
+                            <Path Data="M19,6H16V5a2,2 0 0,0 -2,-2H10A2,2 0 0,0 8,5V6H5A2,2 0 0,0 3,8V19a2,2 0 0,0 2,2H19a2,2 0 0,0 2,-2V8A2,2 0 0,0 19,6M10,5h4V6H10V5M16,14H13V17H11V14H8V12H11V9H13V12H16V14Z"
+                                  Fill="#64748B"
+                                  WidthRequest="24"
+                                  HeightRequest="24"
+                                  Aspect="Uniform"
+                                  HorizontalOptions="Center"
+                                  Margin="0,0,0,2" />
+                            <Label Text="Kit Checklist" TextColor="#0F172A" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
+                            <Label Text="10 Supplies" TextColor="#64748B" FontSize="10" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
                         </VerticalStackLayout>
                     </Border>
 
@@ -227,12 +231,16 @@
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding OpenEvacuationCommand}" />
                         </Border.GestureRecognizers>
-                        <VerticalStackLayout Spacing="6" HorizontalOptions="Center" VerticalOptions="Center">
-                            <!-- House / Shelter Icon -->
-                            <Path Data="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"
-                                  Fill="#94A3B8" WidthRequest="28" HeightRequest="28" Aspect="Uniform" HorizontalOptions="Center" Margin="0,0,0,6" />
-                            <Label Text="Evacuation" TextColor="#0F172A" FontSize="13" FontAttributes="Bold" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
-                            <Label Text="Real-Time" TextColor="#94A3B8" FontSize="10" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+                        <VerticalStackLayout Spacing="4" VerticalOptions="Center" HorizontalOptions="Center">
+                            <Path Data="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"
+                                  Fill="#64748B"
+                                  WidthRequest="24"
+                                  HeightRequest="24"
+                                  Aspect="Uniform"
+                                  HorizontalOptions="Center"
+                                  Margin="0,0,0,2" />
+                            <Label Text="Evacuation" TextColor="#0F172A" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
+                            <Label Text="Real-Time" TextColor="#64748B" FontSize="10" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
                         </VerticalStackLayout>
                     </Border>
 
@@ -241,12 +249,16 @@
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding OpenSafetyCircleCommand}" />
                         </Border.GestureRecognizers>
-                        <VerticalStackLayout Spacing="6" HorizontalOptions="Center" VerticalOptions="Center">
-                            <!-- Map Icon -->
-                            <Path Data="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"
-                                  Fill="#94A3B8" WidthRequest="28" HeightRequest="28" Aspect="Uniform" HorizontalOptions="Center" Margin="0,0,0,6" />
-                            <Label Text="Safety Circle" TextColor="#0F172A" FontSize="13" FontAttributes="Bold" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
-                            <Label Text="Family Status" TextColor="#94A3B8" FontSize="10" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+                        <VerticalStackLayout Spacing="4" VerticalOptions="Center" HorizontalOptions="Center">
+                            <Path Data="M15,5L9,2.89L3,5V21L9,18.89L15,21L21,18V5L15,5M15,19L9,16.89V4.11L15,6.22V19Z"
+                                  Fill="#64748B"
+                                  WidthRequest="24"
+                                  HeightRequest="24"
+                                  Aspect="Uniform"
+                                  HorizontalOptions="Center"
+                                  Margin="0,0,0,2" />
+                            <Label Text="Safety Circle" TextColor="#0F172A" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
+                            <Label Text="Family Status" TextColor="#64748B" FontSize="10" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
                         </VerticalStackLayout>
                     </Border>
 

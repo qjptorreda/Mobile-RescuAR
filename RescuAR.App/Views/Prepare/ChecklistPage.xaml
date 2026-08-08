@@ -235,5 +235,49 @@
 
             </VerticalStackLayout>
         </ScrollView>
+
+        <!-- Add Custom Item Modal Overlay -->
+        <Grid BackgroundColor="#80000000" IsVisible="{Binding IsAddModalVisible}">
+            <Border BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 18" Margin="24" Padding="20" VerticalOptions="Center">
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="Add Custom Kit Item" TextColor="#0F172A" FontSize="18" FontAttributes="Bold" />
+                    
+                    <Entry Placeholder="Item Title (e.g., Heavy Duty Gloves)" Text="{Binding NewItemTitle}" FontSize="14" />
+                    <Entry Placeholder="Item Description (e.g., Protection from sharp debris)" Text="{Binding NewItemDescription}" FontSize="14" />
+
+                    <!-- Category Selection Dropdown -->
+                    <Border Stroke="#CBD5E1" StrokeThickness="1" StrokeShape="RoundRectangle 10" Padding="12,0" BackgroundColor="#FFFFFF">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Picker Grid.Column="0"
+                                    Title="Select Category"
+                                    TitleColor="#94A3B8"
+                                    TextColor="#0F172A"
+                                    FontSize="14"
+                                    ItemsSource="{Binding AvailableCategories}"
+                                    SelectedItem="{Binding NewItemCategory}"
+                                    VerticalOptions="Center" />
+                            <Path Grid.Column="1"
+                                  Data="M7,10L12,15L17,10H7Z"
+                                  Fill="#64748B"
+                                  WidthRequest="12"
+                                  HeightRequest="12"
+                                  Aspect="Uniform"
+                                  HorizontalOptions="End"
+                                  VerticalOptions="Center"
+                                  InputTransparent="True" />
+                        </Grid>
+                    </Border>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Margin="0,8,0,0">
+                        <Button Text="Cancel" TextColor="#64748B" BackgroundColor="#F1F5F9" CornerRadius="10" HeightRequest="44" FontSize="14" FontAttributes="Bold"
+                                Command="{Binding CloseAddModalCommand}" />
+                        <Button Grid.Column="1" Text="Save Item" TextColor="#FFFFFF" BackgroundColor="#0A8491" CornerRadius="10" HeightRequest="44" FontSize="14" FontAttributes="Bold"
+                                Command="{Binding SaveNewItemCommand}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
+>>>>>>> 8a3ec5d5508f8052672930d3d067932af7af4192
     </Grid>
 </ContentPage>
